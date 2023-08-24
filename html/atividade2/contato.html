@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contato</title>
+        <meta charset = "UTF-08"/>
+        <meta name = "author" content = "Ícaro Pereira"/>
+    </head>
+
+    <body>
+        <header>
+            <img src = "https://webacademy.icomp.ufam.edu.br/assets/img/webacademylogo.png" width = "250" height = "100"/>
+            <h1>Loja de Cursos Fullstack - Web Academy</h1>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href = "./home.html">Início</a></li>
+                <li><a href = "#">Cursos</a></li>
+                <li><a href = "#">Sobre Nós</a></li>
+                <li><a href = "#">Contato</a></li>
+            </ul>
+        </nav>        
+
+        <form action = "mailto:icaro.pereira@icomp.ufam.edu.br" method = "get">
+            <label for = "nome">Nome:</label>
+            <input type = "text" id = "nome" name = "nome" required/><br/>
+
+            <label for = "email">E-mail:</label>
+            <input type = "email" id = "email" name = "email" required/><br/>
+
+            <label for = "mensagem">Mensagem:</label>
+            <textarea id = "mensagem" name = "mensagem" rows = "4" required></textarea><br/>
+
+            <input type = "submit" id = "submit" name = "submit" value = "Enviar"/>
+        </form>
+
+        <footer>
+            <p>&copy; 2023 Web Academy. Todos os direitos reservados.</p>
+        </footer>
+    </body>
+</html>
