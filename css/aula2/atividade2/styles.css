@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 1px solid red;
+}
+
+.box1, .box2 {
+    height: 100px;
+    width: 200px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+    background-color: wheat;
+}
+
+
+.box1 {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.box2 {
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+}
