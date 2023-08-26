@@ -14,13 +14,14 @@ p.author {
 
 p.resumo {
     margin-left: 4cm;
-    margin-right: 4cm;
+    /* margin-right: 4cm; ?*/
+    margin-right: 6cm;
     font-style: italic;
     font-family: "Times New Roman";
     font-size: 12pt;
     text-indent: 1cm;
     /*text-align: justify?*/
-    text-align: left;
+    text-align: justify;
 }
 
 p.title {
