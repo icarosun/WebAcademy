@@ -2,7 +2,7 @@ body {
     background-color: beige;
 }
 
-h1 {
+h1::first-letter {
     font-family: 'Verdana';
     font-size: 36pt;
     color: brown;
@@ -29,4 +29,10 @@ p {
 li:first-child {
     font-family: 'Verdana';
     color: darkolivegreen;
+    background-color: yellow;
+}
+
+img {
+    width: 250px;
+    height: 200px;
 }
