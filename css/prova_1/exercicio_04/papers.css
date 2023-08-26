@@ -21,7 +21,7 @@ p.resumo {
     font-size: 12pt;
     text-indent: 1cm;
     /*text-align: justify; ?*/
-    text-align: justify;
+    text-align: left;
 }
 
 p.title {
