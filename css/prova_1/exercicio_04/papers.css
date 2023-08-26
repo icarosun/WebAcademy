@@ -1,0 +1,47 @@
+h1.title {
+    font-size: 16pt;
+    font-family: "Arial";
+    font-weight: bold;
+    text-align: center;
+}
+
+p.author {
+    font-size: 14pt;
+    font-family: "Arial";
+    font-weight: bold;
+    text-align: center;
+}
+
+p.resumo {
+    margin-left: 4cm;
+    margin-right: 4cm;
+    font-style: italic;
+    font-family: "Times New Roman";
+    font-size: 12pt;
+    text-indent: 1cm;
+    /*text-align: justify?*/
+    text-align: left;
+}
+
+p.title {
+    font-size: 14pt;
+    font-family: 'Arial';
+    font-weight: bold;
+    text-indent: 1cm;
+}
+
+p.sub-title {
+    font-size: 12pt;
+    font-family: "Arial";
+    font-weight: bold;
+    text-indent: 1cm;
+}
+
+body, .resultados {
+    margin-left: 3cm;
+    margin-right: 3cm;
+    font-family: "Times New Roman";
+    text-indent: 1cm;
+    font-size: 12pt;
+}
+
