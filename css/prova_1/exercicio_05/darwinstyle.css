@@ -4,8 +4,9 @@ body {
 
 h1::first-letter {
     font-family: 'Verdana';
-    font-size: 36pt;
+    font-size: 40pt;
     color: brown;
+    font-weight: bold;
 }
 
 h2 {
