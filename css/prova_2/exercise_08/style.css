@@ -1,0 +1,41 @@
+header {
+    background-color: yellow;
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+section {
+    float: left;
+    width: 200px;
+    text-align: left;
+}
+
+.menu {
+    padding-left: 0;
+}
+
+main {
+    display: inline-block;
+    border-left: 5px solid rgb(30, 215, 96);
+    padding-left: 5px;
+}
+
+aside {
+    float: right;
+    width: 250px;
+    text-align: right;
+    border: 4px dotted green;
+}
+
+li {
+    list-style: none;
+}
+
+.date {
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+}
