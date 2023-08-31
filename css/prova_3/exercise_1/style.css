@@ -1,0 +1,32 @@
+nav ul {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+}
+
+li {
+    text-decoration: none;
+    width: 100%;
+    background-color: #FF9A00;
+    list-style-type: none;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 10px;
+ 
+    /* border: 2px solid #ff5500; */
+    border-color: #ff5500;
+    border-top-style: solid;
+    border-right-style: solid;
+    border-left-style: solid;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.selecionado {
+    color: black;
+}
