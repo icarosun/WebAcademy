@@ -1,0 +1,1 @@
+Lore.txt dentro do arquivo lore.txt
