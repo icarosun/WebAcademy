@@ -1,4 +1,4 @@
-export default class Aluno {
+export class Aluno {
     constructor(
         private nome: string,
         private id: string = "",
@@ -47,4 +47,3 @@ export default class Aluno {
         this.peso = peso;
     }
 }
-

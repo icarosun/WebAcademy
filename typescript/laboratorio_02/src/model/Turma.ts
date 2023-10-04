@@ -1,4 +1,4 @@
-import Aluno from "./Aluno";
+import { Aluno } from "./Aluno";
 
 interface List {
     // load(): void,
