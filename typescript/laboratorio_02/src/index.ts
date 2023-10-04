@@ -1,8 +1,5 @@
-// import Aluno from "./model/aluno";
-import { pi } from "./model/aluno";
+import Aluno from "./model/Aluno";
 
-// const aluno: Aluno = new Aluno();
+const aluno: Aluno = new Aluno("icaro");
 
-// console.log(aluno.nome);
-
-console.log(pi);
+console.log(aluno.getNome());
