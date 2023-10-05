@@ -1,7 +1,7 @@
 export class Aluno {
     constructor(
         private nome: string,
-        private id: string = "",
+        private id: string,
         private idade: number = 0,
         private altura: number = 0,
         private peso: number = 0

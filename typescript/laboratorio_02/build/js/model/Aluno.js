@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Aluno = void 0;
 class Aluno {
-    constructor(nome, id = "", idade = 0, altura = 0, peso = 0) {
+    constructor(nome, id, idade = 0, altura = 0, peso = 0) {
         this.nome = nome;
         this.id = id;
         this.idade = idade;

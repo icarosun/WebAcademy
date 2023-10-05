@@ -4,13 +4,16 @@
 //model/aluno.ts
 class Aluno {
     constructor(
-        private nome: string,
         private id: string = "",
-        private idade: number = 0,
-        private altura: number = 0,
-        private peso: number = 0
+        private nome: string,
+        private idade: number,
+        private altura: number,
+        private peso: number
     ) {
         this.setNome(nome);
+        this.setIdade(idade);
+        this.setAltura(altura);
+        this.setPeso(peso);
     }
 
     getId() : string { return this.id; }
@@ -61,8 +64,27 @@ interface List {
     removeItem(id: string): void
 }
 
-export default class Turma implements List {
-    constructor(private list: Aluno[] = []){}
+class Turma implements List {
+    constructor(private id: string, private nome: string, private list: Aluno[] = []){
+        this.setId(id);
+        this.setNome(nome);
+    }
+
+    getId(): string {
+        return this.id;
+    }
+
+    setId(id: string): void {
+        this.id = id;
+    }
+
+    getNome(): string {
+        return this.nome;
+    }
+
+    setNome(nome: string) {
+        this.nome = nome;
+    }
 
     getList(): Aluno[] {
         return this.list;
@@ -127,7 +149,104 @@ export default class Turma implements List {
     }
 }
 
+interface TableList {
+    tbody: HTMLTableSectionElement, 
+    clear(): void,
+    render(turma: Turma): void
+}
 
-const aluno: Aluno = new Aluno("icaro");
+class ListTemplateTBody implements TableList {
+    tbody: HTMLTableSectionElement;
 
-const turma: Turma = new Turma();
+    constructor() {
+        this.tbody = document.querySelector("tbody") as HTMLTableSectionElement;
+    }
+
+    clear(): void {
+        this.tbody.innerHTML = "";
+    }
+
+    render(turma: Turma): void {
+        this.clear();
+
+        turma.getList().forEach((aluno) => {
+            this.tbody.appendChild(this.createLineinTableElement(aluno));
+        });
+    }
+
+    createLineinTableElement(itemAluno: Aluno) {
+        const trElement: HTMLTableRowElement = document.createElement("tr");
+      
+        const tdElementId: HTMLTableCellElement = document.createElement("td");
+        const tdElementNome: HTMLTableCellElement = document.createElement("td");
+        const tdElementIdade:  HTMLTableCellElement = document.createElement("td");
+        const tdElementAltura: HTMLTableCellElement = document.createElement("td");
+        const tdElementPeso: HTMLTableCellElement = document.createElement("td");
+
+        tdElementId.textContent = itemAluno.getId();
+        tdElementNome.textContent = itemAluno.getNome();
+        tdElementIdade.textContent = itemAluno.getIdade().toString();
+        tdElementAltura.textContent = itemAluno.getAltura().toString();
+        tdElementPeso.textContent = itemAluno.getPeso().toString();
+
+        trElement.appendChild(tdElementId);
+        trElement.appendChild(tdElementNome);
+        trElement.appendChild(tdElementIdade);
+        trElement.appendChild(tdElementAltura);
+        trElement.appendChild(tdElementPeso);
+
+        const tdElementActions: HTMLElement = document.createElement("td");
+      
+        const btnEditElement: HTMLButtonElement = document.createElement("button");
+        const btnDeleteElement: HTMLButtonElement = document.createElement("button");
+      
+        let idElement: string = itemAluno.getId();
+      
+        btnEditElement.setAttribute("id", idElement);
+        btnDeleteElement.setAttribute("id", idElement);
+      
+        btnEditElement.setAttribute("data-bs-toggle", "modal");
+        btnEditElement.setAttribute("data-bs-target", "#editTaskModal");
+        btnEditElement.setAttribute("type", "button");
+      
+        btnEditElement.textContent = "Editar";
+        btnEditElement.classList.add("btn");
+        btnEditElement.classList.add("btn-secondary");
+        btnEditElement.classList.add("mx-1");
+      
+        // btnEditElement.addEventListener("click"
+      
+        btnDeleteElement.textContent = "Excluir";
+        btnDeleteElement.classList.add("btn");
+        btnDeleteElement.classList.add("btn-outline-secondary");
+        btnDeleteElement.classList.add("mx-1");
+      
+        // btnDeleteElement.addEventListener("click", () => {});
+      
+        tdElementActions.appendChild(btnEditElement);
+        tdElementActions.appendChild(btnDeleteElement);
+      
+        trElement.appendChild(tdElementActions);
+      
+        return trElement;
+    }
+}
+
+const aluno: Aluno = new Aluno("0", "Testa", 15, 180, 60);
+const alunoA: Aluno = new Aluno("1", "Testa1", 15, 180, 60);
+const alunoB: Aluno = new Aluno("0", "Testa2", 15, 180, 60);
+
+const edFisica: Turma = new Turma("123", "Educação Física");
+const showHtml: ListTemplateTBody = new ListTemplateTBody();
+
+console.log(aluno.getNome());
+console.log(alunoA.getNome());
+console.log(alunoB.getNome());
+
+edFisica.addItem(aluno);
+edFisica.addItem(alunoA);
+edFisica.addItem(alunoB);
+
+console.log(edFisica.getNumAlunos());
+
+showHtml.render(edFisica);
