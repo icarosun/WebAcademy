@@ -104,6 +104,7 @@ class Turma implements List {
     }
 
     updateItem(id: number, newItemObj: Aluno): void {
+        newItemObj.setId(this.getItem(id).getId());
         this.list[id] = newItemObj;
     }
 
@@ -161,10 +162,10 @@ class Turma implements List {
 interface TableList {
     tbody: HTMLTableSectionElement, 
     clear(): void,
-    render(turma: Turma, form: FormTemplate): void
+    render(turma: Turma, subject: Subject): void
 }
 
-class ListTemplateTBody implements TableList {
+class ListTemplateTBody implements TableList, Observer {
     tbody: HTMLTableSectionElement;
 
     constructor() {
@@ -173,6 +174,12 @@ class ListTemplateTBody implements TableList {
 
     clear(): void {
         this.tbody.innerHTML = "";
+    }
+
+    renderizer(subject: Subject): void {
+        if (subject instanceof Controller) {
+            this.render(subject.getTurma(), subject);
+        }
     }
 
     // addClickInButtons(form: FormTemplate, turma: Turma) {
@@ -200,17 +207,16 @@ class ListTemplateTBody implements TableList {
     //     })
     // }
 
-    render(turma: Turma): void {
+    render(turma: Turma, subject: Controller): void {
         this.clear();
 
         turma.getList().forEach((aluno, id: number) => {
-            this.tbody.appendChild(this.createLineinTableElement(aluno, id.toString(), turma));
+            this.tbody.appendChild(this.createLineinTableElement(aluno, id.toString(), subject));
         });
-
         // this.addClickInButtons(form, turma);
     }
 
-    createLineinTableElement(itemAluno: Aluno, id: string, turma: Turma) {
+    createLineinTableElement(itemAluno: Aluno, id: string, functionController: Controller) {
         const trElement: HTMLTableRowElement = document.createElement("tr");
       
         // const tdElementId: HTMLTableCellElement = document.createElement("td");
@@ -245,7 +251,8 @@ class ListTemplateTBody implements TableList {
         btnEditElement.classList.add("btnEdit");
 
         btnEditElement.addEventListener("click", () => {
-
+            console.log("DENTRO");
+            functionController.editAluno(parseInt(id));
         });
 
         btnDeleteElement.textContent = "Excluir";
@@ -255,9 +262,7 @@ class ListTemplateTBody implements TableList {
         btnDeleteElement.classList.add("mx-1");
 
         btnDeleteElement.addEventListener("click", () => {
-            console.log("DELETE", id);
-            turma.removeItem(id);
-            this.render(turma);
+            console.log("BUTTON DELETE", id);
         });
       
         tdElementActions.appendChild(btnEditElement);
@@ -270,10 +275,8 @@ class ListTemplateTBody implements TableList {
 }
 
 interface Form {
-    submitValues(): void,
+    submitValues(controller: Controller): void,
 }
-
-type alunoView = [string, number, number, number];
 
 type inputsHTML = [boolean, boolean, boolean, boolean];
 
@@ -284,14 +287,11 @@ class FormTemplate implements Form {
     inputs: NodeListOf<HTMLInputElement>;
     private isToUpdate: boolean = false;
 
-    constructor(
-        controller: Controller
-    ) {
+    constructor() {
         this.form = document.querySelector("form") as HTMLFormElement;
         this.btnSubmit = document.querySelector("#btnConfirm") as HTMLButtonElement;
         this.btnUtils = document.querySelector("#btnUtils") as HTMLButtonElement;
         this.inputs = document.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
-        this.submitValues();
         this.setClickButtonUtils();
     }
 
@@ -337,6 +337,7 @@ class FormTemplate implements Form {
         this.inputs[2].value = item.getAltura().toString();
         this.inputs[3].value = item.getPeso().toString();
 
+        this.setIsToUpdatee(true);
         this.setButtonsToUpdate();
     }
 
@@ -354,10 +355,9 @@ class FormTemplate implements Form {
 
         this.btnUtils.textContent = "Cancelar atualização";
         this.btnUtils.addEventListener("click", () => {
+            this.clearInputs(); 
+            this.removeValidatedClass();
             this.setButtons();
-            this.clearInputs();
-
-           this.removeValidatedClass();
         });
     }
 
@@ -365,7 +365,7 @@ class FormTemplate implements Form {
         this.btnUtils.addEventListener("click", () => this.clearInputs());
     }
 
-    submitValues(): void {
+    submitValues(controller: Controller): void {
         this.form.addEventListener("submit", (event: SubmitEvent) => {
             event.preventDefault();
 
@@ -398,8 +398,9 @@ class FormTemplate implements Form {
                 const aluno: Aluno = new Aluno("0", values[0], parseInt(values[1]), parseFloat(values[2]), parseFloat(values[3]));
 
                 if(this.getIsToUpdate()) {
-                    // controller.putAluno(aluno);
+                    controller.putAluno(aluno);
                     this.setIsToUpdatee(false);
+                    this.setButtons();
                 } else {
                     controller.postAluno(aluno);
                 }
@@ -407,54 +408,33 @@ class FormTemplate implements Form {
                 this.removeValidatedClass();
                 this.clearInputs();
             }
-
-        
-            // if(this.verifyValueNome(this.inputs[0].value)) {
-            //     const nome: string = this.inputs[0].value;
-            //     const idade: number = parseInt(this.inputs[1].value);
-            //     const altura: number = parseFloat(this.inputs[2].value);
-            //     const peso: number = parseFloat(this.inputs[3].value);                
-        
-            //     if (this.getFlagUpdate()) {
-            //         const id: number = this.getIdUpdate();
-
-            //         const updateAluno = new Aluno(id.toString(), nome, idade, altura, peso);
-            //         // turma.updateItem(id, updateAluno);
-
-            //         this.setFlagUpdate(false);
-            //         this.setIdUpdate(0);
-
-            //         this.setButtons();
-            //     } else {
-            //         // const itemId: number = turma.getNumAlunos();
-            //         const newAluno = new Aluno(this.getIdUpdate().toString(), nome, idade, altura, peso);
-
-            //         // turma.addItem(newAluno);
-            //     }
-
-            //     // listTemplateTBody.render(turma);
-
-            //     this.clearInputs();
-            //     this.removeValidatedClass();
-            // } else {
-            //     this.inputs[0].value = "";
-            //     this.form.classList.add("was-validated");
-            // }
         });
     }
 }
 
+interface Subject {
+    addView(observer: Observer): void,
+    notify(): void
+}
+
+interface Observer {
+    renderizer(subject: Subject): void
+}
+
 //controller
-class Controller {
-    private listTemplateTBody: ListTemplateTBody = new ListTemplateTBody();
+class Controller implements Subject {
     private turma: Turma;
+    private observers: Observer[] = [];
+    private idUpdate: number = -1; 
+    form: FormTemplate = new FormTemplate();
 
     constructor(
         nomeDisciplina: string,
-        idTurma: string
+        idTurma: string,
+        
     ) {
         this.turma = new Turma(idTurma, nomeDisciplina);
-        this.listTemplateTBody.render(this.turma);
+        this.form.submitValues(this);
     }
     
     postAluno(newAluno: Aluno) {
@@ -463,24 +443,65 @@ class Controller {
         newAluno.setId(id.toString());
 
         this.addAluno(newAluno);
+        this.notify();
+    }
+
+    putAluno(newAluno: Aluno) {
+        this.updateAluno(newAluno);
+        this.notify();
+    }
+
+    updateAluno(newAluno: Aluno) {
+        this.turma.updateItem(this.getIdUpdate(), newAluno);
     }
 
     addAluno(newAluno: Aluno) {
         this.turma.addItem(newAluno);
-        this.listTemplateTBody.render(this.turma);
+    }
+
+    editAluno(id: number) {
+        this.setIdUpdate(id);
+        this.form.setValuesInView(this.turma.getItem(id));
+    }
+
+    setIdUpdate(id: number) {
+        this.idUpdate = id;
+    }
+
+    getIdUpdate() {
+        return this.idUpdate;
+    }
+
+    getTurma(): Turma {
+        return this.turma;
+    }
+
+    addView(observer: Observer) {
+        console.log("Add observer");
+        this.observers.push(observer);
+        this.notify();
+    }
+
+    notify(): void {
+        for(const observer of this.observers) {
+            observer.renderizer(this);
+        }
     }
 }
 
-const controller: Controller = new Controller("Educação Física", "123");
-const form: FormTemplate = new FormTemplate(controller);
+const controllerHTML: Controller = new Controller("Educação Física", "123");
+// const form: FormTemplate = new FormTemplate(controller);
+const listTemplateTBody: ListTemplateTBody = new ListTemplateTBody();
 
 const aluno: Aluno = new Aluno("0", "João", 15, 180, 60);
 const alunoA: Aluno = new Aluno("1", "Joana", 15, 180, 60);
 const alunoB: Aluno = new Aluno("2", "Joca", 15, 180, 60);
 
-controller.addAluno(aluno);
-controller.addAluno(alunoA);
-controller.addAluno(alunoB);
+controllerHTML.addAluno(aluno);
+controllerHTML.addAluno(alunoA);
+controllerHTML.addAluno(alunoB);
+
+controllerHTML.addView(listTemplateTBody);
 
 // const edFisica: Turma = new Turma("123", "Educação Física");
 // const showHtml: ListTemplateTBody = new ListTemplateTBody();
