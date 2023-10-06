@@ -3,7 +3,7 @@
 // import Aluno from "./model/Aluno";
 //model/aluno.ts
 class Aluno {
-    constructor(id = "", nome, idade, altura, peso) {
+    constructor(id, nome, idade, altura, peso) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
@@ -122,17 +122,17 @@ class ListTemplateTBody {
     }
     createLineinTableElement(itemAluno) {
         const trElement = document.createElement("tr");
-        const tdElementId = document.createElement("td");
+        // const tdElementId: HTMLTableCellElement = document.createElement("td");
         const tdElementNome = document.createElement("td");
         const tdElementIdade = document.createElement("td");
         const tdElementAltura = document.createElement("td");
         const tdElementPeso = document.createElement("td");
-        tdElementId.textContent = itemAluno.getId();
+        // tdElementId.textContent = itemAluno.getId();
         tdElementNome.textContent = itemAluno.getNome();
         tdElementIdade.textContent = itemAluno.getIdade().toString();
         tdElementAltura.textContent = itemAluno.getAltura().toString();
         tdElementPeso.textContent = itemAluno.getPeso().toString();
-        trElement.appendChild(tdElementId);
+        // trElement.appendChild(tdElementId);
         trElement.appendChild(tdElementNome);
         trElement.appendChild(tdElementIdade);
         trElement.appendChild(tdElementAltura);
@@ -162,11 +162,35 @@ class ListTemplateTBody {
         return trElement;
     }
 }
+const btnNewAluno = document.querySelector("#btnConfirm");
+const formElement = document.querySelector("form");
+const edFisica = new Turma("123", "Educação Física");
+const showHtml = new ListTemplateTBody();
+formElement.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const inputNome = document.querySelector("#nome");
+    const inputIdade = document.querySelector("#idade");
+    const inputAltura = document.querySelector("#altura");
+    const inputPeso = document.querySelector("#peso");
+    const nome = inputNome.value.trim();
+    console.log(nome);
+    if (!nome) {
+        inputNome.value = "";
+        formElement.classList.add("was-validated");
+    }
+    else {
+        const idade = parseFloat(inputIdade.value);
+        const altura = parseFloat(inputAltura.value);
+        const peso = parseFloat(inputPeso.value);
+        const itemId = edFisica.getNumAlunos();
+        const newAluno = new Aluno(itemId.toString(), nome, idade, altura, peso);
+        edFisica.addItem(newAluno);
+        showHtml.render(edFisica);
+    }
+});
 const aluno = new Aluno("0", "Testa", 15, 180, 60);
 const alunoA = new Aluno("1", "Testa1", 15, 180, 60);
 const alunoB = new Aluno("0", "Testa2", 15, 180, 60);
-const edFisica = new Turma("123", "Educação Física");
-const showHtml = new ListTemplateTBody();
 console.log(aluno.getNome());
 console.log(alunoA.getNome());
 console.log(alunoB.getNome());
