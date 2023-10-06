@@ -245,7 +245,7 @@ class ListTemplateTBody implements TableList {
         btnEditElement.classList.add("btnEdit");
 
         btnEditElement.addEventListener("click", () => {
-            
+
         });
 
         btnDeleteElement.textContent = "Excluir";
@@ -270,23 +270,28 @@ class ListTemplateTBody implements TableList {
 }
 
 interface Form {
-    submitValues(turma: Turma, listTemplateTBody: ListTemplateTBody): void,
+    submitValues(): void,
 }
+
+type alunoView = [string, number, number, number];
+
+type inputsHTML = [boolean, boolean, boolean, boolean];
 
 class FormTemplate implements Form {
     btnSubmit: HTMLButtonElement;
     btnUtils: HTMLButtonElement;
     form: HTMLFormElement;
     inputs: NodeListOf<HTMLInputElement>;
-    private flagUpdate: boolean = false;
-    private idUpdate: number = 0;
+    private isToUpdate: boolean = false;
 
-    constructor(turma: Turma, listTemplateTBody: ListTemplateTBody) {
+    constructor(
+        controller: Controller
+    ) {
         this.form = document.querySelector("form") as HTMLFormElement;
         this.btnSubmit = document.querySelector("#btnConfirm") as HTMLButtonElement;
         this.btnUtils = document.querySelector("#btnUtils") as HTMLButtonElement;
         this.inputs = document.querySelectorAll("input") as NodeListOf<HTMLInputElement>;
-        this.submitValues(turma, listTemplateTBody);
+        this.submitValues();
         this.setClickButtonUtils();
     }
 
@@ -294,24 +299,24 @@ class FormTemplate implements Form {
         return nome.trim() ? true : false; 
     }
 
+    verifyValueIdade(idade: string) {
+        return isNaN(parseInt(idade)) || idade === undefined  ? false : true;
+    }
+
+    verifyValueFloat(value: string) {
+        return isNaN(parseFloat(value)) || value === undefined ? false : true;
+    }
+
     clearInputs() {
         this.inputs.forEach((input) => input.value = "");
     }
 
-    setFlagUpdate(bool: boolean) {
-        this.flagUpdate = bool;
+    setIsToUpdatee(isToUpdate: boolean) {
+        this.isToUpdate = isToUpdate;
     }
 
-    getFlagUpdate() {
-        return this.flagUpdate;
-    }
-
-    setIdUpdate(id: number) {
-        this.idUpdate = id;
-    }
-
-    getIdUpdate() {
-        return this.idUpdate;
+    getIsToUpdate() {
+        return this.isToUpdate;
     }
 
     removeValidatedClass() {
@@ -332,8 +337,6 @@ class FormTemplate implements Form {
         this.inputs[2].value = item.getAltura().toString();
         this.inputs[3].value = item.getPeso().toString();
 
-        this.setIdUpdate(parseInt(item.getId()));
-        this.setFlagUpdate(true);
         this.setButtonsToUpdate();
     }
 
@@ -351,8 +354,6 @@ class FormTemplate implements Form {
 
         this.btnUtils.textContent = "Cancelar atualização";
         this.btnUtils.addEventListener("click", () => {
-            this.setFlagUpdate(false);
-            this.setIdUpdate(0);
             this.setButtons();
             this.clearInputs();
 
@@ -364,95 +365,144 @@ class FormTemplate implements Form {
         this.btnUtils.addEventListener("click", () => this.clearInputs());
     }
 
-    submitValues(turma: Turma, listTemplateTBody: ListTemplateTBody): void {
+    submitValues(): void {
         this.form.addEventListener("submit", (event: SubmitEvent) => {
             event.preventDefault();
 
-            if(this.verifyValueNome(this.inputs[0].value)) {
-                const nome: string = this.inputs[0].value;
-                const idade: number = parseInt(this.inputs[1].value);
-                const altura: number = parseFloat(this.inputs[2].value);
-                const peso: number = parseFloat(this.inputs[3].value);                
-        
-                if (this.getFlagUpdate()) {
-                    const id: number = this.getIdUpdate();
+            let values: string[] = [];
 
-                    const updateAluno = new Aluno(id.toString(), nome, idade, altura, peso);
-                    turma.updateItem(id, updateAluno);
+            this.inputs.forEach((input, id) => {
+                values[id] = input.value as string;
+            })
 
-                    this.setFlagUpdate(false);
-                    this.setIdUpdate(0);
+            const verifyInputs: inputsHTML = [
+                this.verifyValueNome(values[0]),
+                this.verifyValueIdade(values[1]),
+                this.verifyValueFloat(values[2]),
+                this.verifyValueFloat(values[3])
+            ];
 
-                    this.setButtons();
+            if (verifyInputs[0] === false) {
+                this.inputs[0].value = "";
+                this.setValidatedClass();
+            } else if (verifyInputs[1] === false) {
+                this.inputs[1].value = "";
+                this.setValidatedClass();
+            } else if (verifyInputs[2] === false) {
+                this.inputs[2].value = "";
+                this.setValidatedClass();
+            } else if (verifyInputs[3] === false) {
+                this.inputs[3].value = "";
+                this.setValidatedClass();
+            } else {
+                const aluno: Aluno = new Aluno("0", values[0], parseInt(values[1]), parseFloat(values[2]), parseFloat(values[3]));
+
+                if(this.getIsToUpdate()) {
+                    // controller.putAluno(aluno);
+                    this.setIsToUpdatee(false);
                 } else {
-                    const itemId: number = turma.getNumAlunos();
-                    const newAluno = new Aluno(this.getIdUpdate().toString(), nome, idade, altura, peso);
-
-                    turma.addItem(newAluno);
+                    controller.postAluno(aluno);
                 }
 
-                listTemplateTBody.render(turma);
-
-                this.clearInputs();
                 this.removeValidatedClass();
-            } else {
-                this.inputs[0].value = "";
-                this.form.classList.add("was-validated");
+                this.clearInputs();
             }
+
+        
+            // if(this.verifyValueNome(this.inputs[0].value)) {
+            //     const nome: string = this.inputs[0].value;
+            //     const idade: number = parseInt(this.inputs[1].value);
+            //     const altura: number = parseFloat(this.inputs[2].value);
+            //     const peso: number = parseFloat(this.inputs[3].value);                
+        
+            //     if (this.getFlagUpdate()) {
+            //         const id: number = this.getIdUpdate();
+
+            //         const updateAluno = new Aluno(id.toString(), nome, idade, altura, peso);
+            //         // turma.updateItem(id, updateAluno);
+
+            //         this.setFlagUpdate(false);
+            //         this.setIdUpdate(0);
+
+            //         this.setButtons();
+            //     } else {
+            //         // const itemId: number = turma.getNumAlunos();
+            //         const newAluno = new Aluno(this.getIdUpdate().toString(), nome, idade, altura, peso);
+
+            //         // turma.addItem(newAluno);
+            //     }
+
+            //     // listTemplateTBody.render(turma);
+
+            //     this.clearInputs();
+            //     this.removeValidatedClass();
+            // } else {
+            //     this.inputs[0].value = "";
+            //     this.form.classList.add("was-validated");
+            // }
         });
     }
 }
 
-const edFisica: Turma = new Turma("123", "Educação Física");
-const showHtml: ListTemplateTBody = new ListTemplateTBody();
-const formHtml: FormTemplate = new FormTemplate(edFisica, showHtml);
+//controller
+class Controller {
+    private listTemplateTBody: ListTemplateTBody = new ListTemplateTBody();
+    private turma: Turma;
 
-// formElement.addEventListener("submit", (event: SubmitEvent): void => {
-//     event.preventDefault();
+    constructor(
+        nomeDisciplina: string,
+        idTurma: string
+    ) {
+        this.turma = new Turma(idTurma, nomeDisciplina);
+        this.listTemplateTBody.render(this.turma);
+    }
+    
+    postAluno(newAluno: Aluno) {
+        let id: number = this.turma.getList.length > 0 ? this.turma.getList.length - 1 : 1;
 
-//     const inputNome: HTMLInputElement = document.querySelector("#nome") as HTMLInputElement;
-//     const inputIdade: HTMLInputElement = document.querySelector("#idade") as HTMLInputElement;
-//     const inputAltura: HTMLInputElement = document.querySelector("#altura") as HTMLInputElement;
-//     const inputPeso: HTMLInputElement = document.querySelector("#peso") as HTMLInputElement;
+        newAluno.setId(id.toString());
 
-//     const nome: string = inputNome.value.trim();
+        this.addAluno(newAluno);
+    }
 
-//     console.log(nome);
+    addAluno(newAluno: Aluno) {
+        this.turma.addItem(newAluno);
+        this.listTemplateTBody.render(this.turma);
+    }
+}
 
-//     if (!nome) {
-//         inputNome.value = "";
-//         formElement.classList.add("was-validated");
-//     } else {
-//         const idade: number = parseFloat(inputIdade.value);
-//         const altura: number = parseFloat(inputAltura.value);
-//         const peso: number = parseFloat(inputPeso.value);
-
-//         const itemId: number = edFisica.getNumAlunos();
-
-//         const newAluno = new Aluno(itemId.toString(), nome, idade, altura, peso);
-
-//         edFisica.addItem(newAluno);
-
-//         showHtml.render(edFisica);
-//     }
-// });
-
+const controller: Controller = new Controller("Educação Física", "123");
+const form: FormTemplate = new FormTemplate(controller);
 
 const aluno: Aluno = new Aluno("0", "João", 15, 180, 60);
 const alunoA: Aluno = new Aluno("1", "Joana", 15, 180, 60);
 const alunoB: Aluno = new Aluno("2", "Joca", 15, 180, 60);
 
-console.log(aluno.getNome());
-console.log(alunoA.getNome());
-console.log(alunoB.getNome());
+controller.addAluno(aluno);
+controller.addAluno(alunoA);
+controller.addAluno(alunoB);
 
-edFisica.addItem(aluno);
-edFisica.addItem(alunoA);
-edFisica.addItem(alunoB);
+// const edFisica: Turma = new Turma("123", "Educação Física");
+// const showHtml: ListTemplateTBody = new ListTemplateTBody();
+// // const formHtml: FormTemplate = new FormTemplate(edFisica, showHtml);
 
-console.log(edFisica.getNumAlunos());
 
-showHtml.render(edFisica);
+
+// const aluno: Aluno = new Aluno("0", "João", 15, 180, 60);
+// const alunoA: Aluno = new Aluno("1", "Joana", 15, 180, 60);
+// const alunoB: Aluno = new Aluno("2", "Joca", 15, 180, 60);
+
+// console.log(aluno.getNome());
+// console.log(alunoA.getNome());
+// console.log(alunoB.getNome());
+
+// edFisica.addItem(aluno);
+// edFisica.addItem(alunoA);
+// edFisica.addItem(alunoB);
+
+// console.log(edFisica.getNumAlunos());
+
+// showHtml.render(edFisica);
 
 
 
