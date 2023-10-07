@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Colabweb fake</title>
+        <meta charset = "utf-8" />
+        <meta name = "author" content = "Ícaro Pereira (@icarosun)" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    </head>
+    <body>
+        <main class = "container-fluid">
+            <h1 id = "nameClass" class = "mt-2 mb-3 text-start fs-2">Turma Educação Física, Sala 123</h1>
+            <hr>
+              <div class="row row-cols-1 row-cols-md-4 mb-3 text-center" data-bs-theme="light">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "numAlunos"  class="card-title pricing-card-title">0</h1>
+                        <h4 class="my-0 fw-normal">Quantidade de Alunos</h4>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "meanYear" class="card-title pricing-card-title">0</h1>
+                        <h4 class="my-0 fw-normal">Média de Idade</h4>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col">
+                  <div class="card mb-4 rounded-3 shadow border-primary">
+                    <div class="card-body">
+                      <h1 id = "meanHigh" class="card-title pricing-card-title">0<small class="text-body-secondary fw-light"> m</small></h1>
+                      <h4 class="my-0 fw-normal">Média de Altura</h4>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "meanWeigh" class="card-title pricing-card-title">0<small class="text-body-secondary fw-light"> kg</small></h1>
+                        <h4 class="my-0 fw-normal">Média do Peso</h4>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            <hr>
+            
+            <form class = "row g-3 needs-validation">
+                <div class="mb-2">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Nome Completo" required>
+                    <div class="invalid-feedback">
+                        Por favor, insira um Nome Completo.
+                    </div>                               
+                </div>            
+                
+                <div class="col-auto">
+                    <label for="idade" class = "form-label">Idade</label>
+                    <input type="number" min = "1" class="form-control" id="idade" placeholder="1" required>
+                    <div class="invalid-feedback">
+                        Por favor, insira um valor.
+                    </div>   
+                </div>
+                      
+                <div class="col-auto">
+                    <label for="altura" class="form-label">Altura</label>
+                    <input type="number" min = "1" class="form-control" id="altura" placeholder="1,00 m" step="0.01" required>
+                    <div class="invalid-feedback">
+                        Por favor, insira um valor.
+                    </div>   
+                </div>
+
+                <div class="col-auto">
+                    <label for="peso" class="form-label">Peso</label>
+                    <input type="number" class="form-control" id="peso" placeholder="1,00 kg" step="0.01" required>
+                    <div class="invalid-feedback">
+                        Por favor, insira um valor.
+                    </div>   
+                </div>
+                
+                <div class="col-auto mt-5">
+                    <button id = "btnConfirm" type="submit" class="btn btn-success mb-3">Novo aluno</button>
+                    <button id = "btnUtils" type="button" class="btn mb-3 btn-outline-secondary">Limpar</button>
+                </div>
+
+            </form>
+            <hr>
+            <table class = "table table-responsive table-striped">
+            <thead>
+                <tr class = "table-dark">
+                    <th scope = "col">Aluno</th>
+                    <th scopre = "col">Idade</th>
+                    <th scope = "col">Altura</th>
+                    <th scope = "col">Peso</th>
+                    <th scope = "col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src = "js/index.js"></script>
+    </body>
+</html>
