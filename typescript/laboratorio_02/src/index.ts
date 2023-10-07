@@ -61,7 +61,7 @@ interface List {
     // save(): void,
     clearList(): void,
     addItem(itemObj: Aluno): void,
-    removeItem(id: string): void,
+    removeItem(id: number): void,
     getItem(id: number): Aluno
 }
 
@@ -87,6 +87,10 @@ class Turma implements List {
         this.nome = nome;
     }
 
+    setList(list: Aluno[]) {
+        this.list = list;
+    }
+
     getList(): Aluno[] {
         return this.list;
     }
@@ -108,8 +112,8 @@ class Turma implements List {
         this.list[id] = newItemObj;
     }
 
-    removeItem(id: string): void {
-        this.list = this.list.filter(item => item.getId() !== id);
+    removeItem(id: number): void {
+        this.list.splice(id, 1);
     }
 
     getNumAlunos(): number {
@@ -251,7 +255,6 @@ class ListTemplateTBody implements TableList, Observer {
         btnEditElement.classList.add("btnEdit");
 
         btnEditElement.addEventListener("click", () => {
-            console.log("DENTRO");
             functionController.editAluno(parseInt(id));
         });
 
@@ -262,7 +265,7 @@ class ListTemplateTBody implements TableList, Observer {
         btnDeleteElement.classList.add("mx-1");
 
         btnDeleteElement.addEventListener("click", () => {
-            console.log("BUTTON DELETE", id);
+            functionController.delAluno(parseInt(id));
         });
       
         tdElementActions.appendChild(btnEditElement);
@@ -412,6 +415,47 @@ class FormTemplate implements Form {
     }
 }
 
+class Info implements Observer {
+    
+    h1NameClass: HTMLHeadingElement = document.querySelector("h1") as HTMLHeadingElement;
+    h1NumAlunos: HTMLHeadingElement = document.querySelector("#numAlunos") as HTMLHeadingElement;
+    h1MeanYear: HTMLHeadingElement = document.querySelector("#meanYear") as HTMLHeadingElement;
+    h1MeanHigh: HTMLHeadingElement = document.querySelector("#meanHigh") as HTMLHeadingElement;
+    h1MeanWeigh: HTMLHeadingElement = document.querySelector("#meanWeigh") as HTMLHeadingElement;
+
+    constructor() {}
+
+    renderizer(subject: Subject): void {
+        if (subject instanceof Controller) {
+            this.h1NameClass.textContent = `Turma de ${subject.getNomeDisciplina()}, Sala - ${subject.getIdTurma()}`;
+
+            const values = subject.getStaticsTurma();
+
+            this.h1NumAlunos.textContent = values[0].toString();
+            this.h1MeanYear.textContent = values[1].toString();
+            
+            this.h1MeanHigh.innerText = `${values[2].toString()} `;
+            this.h1MeanHigh.appendChild(this.createSmallTag("m"));
+
+            this.h1MeanWeigh.innerText = `${values[3].toString()} `;
+            this.h1MeanWeigh.appendChild(this.createSmallTag("kg"));
+        }
+    }
+
+    createSmallTag(value: string): HTMLElement {
+
+        const smallElement: HTMLElement = document.createElement("small");
+
+        smallElement.classList.add("text-body-secondary");
+        smallElement.classList.add("fw-light");
+
+        smallElement.textContent = value;
+
+        return smallElement
+    }
+}
+
+
 interface Subject {
     addView(observer: Observer): void,
     notify(): void
@@ -421,6 +465,8 @@ interface Observer {
     renderizer(subject: Subject): void
 }
 
+type Statics = [number, number, number, number];
+
 //controller
 class Controller implements Subject {
     private turma: Turma;
@@ -429,14 +475,29 @@ class Controller implements Subject {
     form: FormTemplate = new FormTemplate();
 
     constructor(
-        nomeDisciplina: string,
-        idTurma: string,
-        
+        private nomeDisciplina: string,
+        private idTurma: string
     ) {
         this.turma = new Turma(idTurma, nomeDisciplina);
         this.form.submitValues(this);
     }
     
+    setIdTurma(id: string) {
+        this.idTurma = id;
+    }
+
+    getIdTurma() {
+        return this.idTurma;
+    }
+
+    setNomeDisciplina(nomeDisciplina: string) {
+        this.nomeDisciplina = nomeDisciplina;
+    }
+
+    getNomeDisciplina() {
+        return this.nomeDisciplina;
+    }
+
     postAluno(newAluno: Aluno) {
         let id: number = this.turma.getList.length > 0 ? this.turma.getList.length - 1 : 1;
 
@@ -464,6 +525,11 @@ class Controller implements Subject {
         this.form.setValuesInView(this.turma.getItem(id));
     }
 
+    delAluno(id: number) {
+        this.turma.removeItem(id);
+        this.notify();
+    }
+
     setIdUpdate(id: number) {
         this.idUpdate = id;
     }
@@ -476,10 +542,19 @@ class Controller implements Subject {
         return this.turma;
     }
 
+    getStaticsTurma():  Statics{
+        const statics: Statics = [
+            this.turma.getNumAlunos(),
+            this.turma.getMediaIdades(),
+            this.turma.getMediaAlturas(),
+            this.turma.getMediaPesos()
+        ];
+
+        return statics;
+    }
+
     addView(observer: Observer) {
-        console.log("Add observer");
         this.observers.push(observer);
-        this.notify();
     }
 
     notify(): void {
@@ -490,7 +565,7 @@ class Controller implements Subject {
 }
 
 const controllerHTML: Controller = new Controller("Educação Física", "123");
-// const form: FormTemplate = new FormTemplate(controller);
+
 const listTemplateTBody: ListTemplateTBody = new ListTemplateTBody();
 
 const aluno: Aluno = new Aluno("0", "João", 15, 180, 60);
@@ -501,29 +576,11 @@ controllerHTML.addAluno(aluno);
 controllerHTML.addAluno(alunoA);
 controllerHTML.addAluno(alunoB);
 
+const info: Info = new Info();
+
 controllerHTML.addView(listTemplateTBody);
+controllerHTML.addView(info);
 
-// const edFisica: Turma = new Turma("123", "Educação Física");
-// const showHtml: ListTemplateTBody = new ListTemplateTBody();
-// // const formHtml: FormTemplate = new FormTemplate(edFisica, showHtml);
-
-
-
-// const aluno: Aluno = new Aluno("0", "João", 15, 180, 60);
-// const alunoA: Aluno = new Aluno("1", "Joana", 15, 180, 60);
-// const alunoB: Aluno = new Aluno("2", "Joca", 15, 180, 60);
-
-// console.log(aluno.getNome());
-// console.log(alunoA.getNome());
-// console.log(alunoB.getNome());
-
-// edFisica.addItem(aluno);
-// edFisica.addItem(alunoA);
-// edFisica.addItem(alunoB);
-
-// console.log(edFisica.getNumAlunos());
-
-// showHtml.render(edFisica);
-
+controllerHTML.notify();
 
 

@@ -63,6 +63,9 @@ class Turma {
     setNome(nome) {
         this.nome = nome;
     }
+    setList(list) {
+        this.list = list;
+    }
     getList() {
         return this.list;
     }
@@ -72,8 +75,15 @@ class Turma {
     addItem(itemObj) {
         this.list.push(itemObj);
     }
+    getItem(id) {
+        return this.list[id];
+    }
+    updateItem(id, newItemObj) {
+        newItemObj.setId(this.getItem(id).getId());
+        this.list[id] = newItemObj;
+    }
     removeItem(id) {
-        this.list = this.list.filter(item => item.getId() !== id);
+        this.list.splice(id, 1);
     }
     getNumAlunos() {
         return this.list.length;
@@ -114,13 +124,39 @@ class ListTemplateTBody {
     clear() {
         this.tbody.innerHTML = "";
     }
-    render(turma) {
-        this.clear();
-        turma.getList().forEach((aluno) => {
-            this.tbody.appendChild(this.createLineinTableElement(aluno));
-        });
+    renderizer(subject) {
+        if (subject instanceof Controller) {
+            this.render(subject.getTurma(), subject);
+        }
     }
-    createLineinTableElement(itemAluno) {
+    // addClickInButtons(form: FormTemplate, turma: Turma) {
+    //     const buttons: NodeListOf<HTMLButtonElement> = this.tbody.querySelectorAll("button");
+    //     const btnDelete: NodeListOf<HTMLButtonElement> = this.tbody.querySelectorAll(".btnDel");
+    //     buttons.forEach((btn: HTMLButtonElement) => {
+    //         if (btn.classList.contains("btnEdit")) {
+    //             btn.addEventListener("click", function (this: HTMLElement, event: Event) {
+    //                 const tdElement: HTMLTableCellElement = this.parentElement as HTMLTableCellElement;
+    //                 const trElement: HTMLTableRowElement = tdElement.parentElement as HTMLTableRowElement;
+    //                 form.setValuesInView(turma.getItem(parseInt(trElement.id)));
+    //             })
+    //         } 
+    //         if (btn.classList.contains("btnDel")) {
+    //             btn.addEventListener("click", function (this: HTMLElement, event: Event) {
+    //                 const tdElement: HTMLTableCellElement = this.parentElement as HTMLTableCellElement;
+    //                 const trElement: HTMLTableRowElement = tdElement.parentElement as HTMLTableRowElement;
+    //                 console.log("DEL", trElement.id);
+    //             })
+    //         }
+    //     })
+    // }
+    render(turma, subject) {
+        this.clear();
+        turma.getList().forEach((aluno, id) => {
+            this.tbody.appendChild(this.createLineinTableElement(aluno, id.toString(), subject));
+        });
+        // this.addClickInButtons(form, turma);
+    }
+    createLineinTableElement(itemAluno, id, functionController) {
         const trElement = document.createElement("tr");
         // const tdElementId: HTMLTableCellElement = document.createElement("td");
         const tdElementNome = document.createElement("td");
@@ -140,62 +176,248 @@ class ListTemplateTBody {
         const tdElementActions = document.createElement("td");
         const btnEditElement = document.createElement("button");
         const btnDeleteElement = document.createElement("button");
-        let idElement = itemAluno.getId();
-        btnEditElement.setAttribute("id", idElement);
-        btnDeleteElement.setAttribute("id", idElement);
-        btnEditElement.setAttribute("data-bs-toggle", "modal");
-        btnEditElement.setAttribute("data-bs-target", "#editTaskModal");
+        trElement.setAttribute("id", id.toString());
         btnEditElement.setAttribute("type", "button");
         btnEditElement.textContent = "Editar";
         btnEditElement.classList.add("btn");
         btnEditElement.classList.add("btn-secondary");
-        btnEditElement.classList.add("mx-1");
-        // btnEditElement.addEventListener("click"
+        btnEditElement.classList.add("btnEdit");
+        btnEditElement.addEventListener("click", () => {
+            functionController.editAluno(parseInt(id));
+        });
         btnDeleteElement.textContent = "Excluir";
         btnDeleteElement.classList.add("btn");
         btnDeleteElement.classList.add("btn-outline-secondary");
+        btnDeleteElement.classList.add("btnDel");
         btnDeleteElement.classList.add("mx-1");
-        // btnDeleteElement.addEventListener("click", () => {});
+        btnDeleteElement.addEventListener("click", () => {
+            functionController.delAluno(parseInt(id));
+        });
         tdElementActions.appendChild(btnEditElement);
         tdElementActions.appendChild(btnDeleteElement);
         trElement.appendChild(tdElementActions);
         return trElement;
     }
 }
-const btnNewAluno = document.querySelector("#btnConfirm");
-const formElement = document.querySelector("form");
-const edFisica = new Turma("123", "Educação Física");
-const showHtml = new ListTemplateTBody();
-formElement.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const inputNome = document.querySelector("#nome");
-    const inputIdade = document.querySelector("#idade");
-    const inputAltura = document.querySelector("#altura");
-    const inputPeso = document.querySelector("#peso");
-    const nome = inputNome.value.trim();
-    console.log(nome);
-    if (!nome) {
-        inputNome.value = "";
-        formElement.classList.add("was-validated");
+class FormTemplate {
+    constructor() {
+        this.isToUpdate = false;
+        this.form = document.querySelector("form");
+        this.btnSubmit = document.querySelector("#btnConfirm");
+        this.btnUtils = document.querySelector("#btnUtils");
+        this.inputs = document.querySelectorAll("input");
+        this.setClickButtonUtils();
     }
-    else {
-        const idade = parseFloat(inputIdade.value);
-        const altura = parseFloat(inputAltura.value);
-        const peso = parseFloat(inputPeso.value);
-        const itemId = edFisica.getNumAlunos();
-        const newAluno = new Aluno(itemId.toString(), nome, idade, altura, peso);
-        edFisica.addItem(newAluno);
-        showHtml.render(edFisica);
+    verifyValueNome(nome) {
+        return nome.trim() ? true : false;
     }
-});
-const aluno = new Aluno("0", "Testa", 15, 180, 60);
-const alunoA = new Aluno("1", "Testa1", 15, 180, 60);
-const alunoB = new Aluno("0", "Testa2", 15, 180, 60);
-console.log(aluno.getNome());
-console.log(alunoA.getNome());
-console.log(alunoB.getNome());
-edFisica.addItem(aluno);
-edFisica.addItem(alunoA);
-edFisica.addItem(alunoB);
-console.log(edFisica.getNumAlunos());
-showHtml.render(edFisica);
+    verifyValueIdade(idade) {
+        return isNaN(parseInt(idade)) || idade === undefined ? false : true;
+    }
+    verifyValueFloat(value) {
+        return isNaN(parseFloat(value)) || value === undefined ? false : true;
+    }
+    clearInputs() {
+        this.inputs.forEach((input) => input.value = "");
+    }
+    setIsToUpdatee(isToUpdate) {
+        this.isToUpdate = isToUpdate;
+    }
+    getIsToUpdate() {
+        return this.isToUpdate;
+    }
+    removeValidatedClass() {
+        if (this.form.classList.contains("was-validated")) {
+            this.form.classList.remove("was-validated");
+        }
+    }
+    setValidatedClass() {
+        this.form.classList.add("was-validated");
+    }
+    setValuesInView(item) {
+        this.removeValidatedClass();
+        this.inputs[0].value = item.getNome();
+        this.inputs[1].value = item.getIdade().toString();
+        this.inputs[2].value = item.getAltura().toString();
+        this.inputs[3].value = item.getPeso().toString();
+        this.setIsToUpdatee(true);
+        this.setButtonsToUpdate();
+    }
+    setButtons() {
+        this.btnSubmit.textContent = "Novo Aluno";
+        this.btnSubmit.classList.replace("btn-primary", "btn-success");
+        this.btnUtils.textContent = "Limpar";
+        this.setClickButtonUtils();
+    }
+    setButtonsToUpdate() {
+        this.btnSubmit.textContent = "Atualizar dados";
+        this.btnSubmit.classList.replace("btn-success", "btn-primary");
+        this.btnUtils.textContent = "Cancelar atualização";
+        this.btnUtils.addEventListener("click", () => {
+            this.clearInputs();
+            this.removeValidatedClass();
+            this.setButtons();
+        });
+    }
+    setClickButtonUtils() {
+        this.btnUtils.addEventListener("click", () => this.clearInputs());
+    }
+    submitValues(controller) {
+        this.form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let values = [];
+            this.inputs.forEach((input, id) => {
+                values[id] = input.value;
+            });
+            const verifyInputs = [
+                this.verifyValueNome(values[0]),
+                this.verifyValueIdade(values[1]),
+                this.verifyValueFloat(values[2]),
+                this.verifyValueFloat(values[3])
+            ];
+            if (verifyInputs[0] === false) {
+                this.inputs[0].value = "";
+                this.setValidatedClass();
+            }
+            else if (verifyInputs[1] === false) {
+                this.inputs[1].value = "";
+                this.setValidatedClass();
+            }
+            else if (verifyInputs[2] === false) {
+                this.inputs[2].value = "";
+                this.setValidatedClass();
+            }
+            else if (verifyInputs[3] === false) {
+                this.inputs[3].value = "";
+                this.setValidatedClass();
+            }
+            else {
+                const aluno = new Aluno("0", values[0], parseInt(values[1]), parseFloat(values[2]), parseFloat(values[3]));
+                if (this.getIsToUpdate()) {
+                    controller.putAluno(aluno);
+                    this.setIsToUpdatee(false);
+                    this.setButtons();
+                }
+                else {
+                    controller.postAluno(aluno);
+                }
+                this.removeValidatedClass();
+                this.clearInputs();
+            }
+        });
+    }
+}
+class Info {
+    constructor() {
+        this.h1NameClass = document.querySelector("h1");
+        this.h1NumAlunos = document.querySelector("#numAlunos");
+        this.h1MeanYear = document.querySelector("#meanYear");
+        this.h1MeanHigh = document.querySelector("#meanHigh");
+        this.h1MeanWeigh = document.querySelector("#meanWeigh");
+    }
+    renderizer(subject) {
+        if (subject instanceof Controller) {
+            this.h1NameClass.textContent = `Turma de ${subject.getNomeDisciplina()}, Sala - ${subject.getIdTurma()}`;
+            const values = subject.getStaticsTurma();
+            this.h1NumAlunos.textContent = values[0].toString();
+            this.h1MeanYear.textContent = values[1].toString();
+            this.h1MeanHigh.innerText = `${values[2].toString()} `;
+            this.h1MeanHigh.appendChild(this.createSmallTag("m"));
+            this.h1MeanWeigh.innerText = `${values[3].toString()} `;
+            this.h1MeanWeigh.appendChild(this.createSmallTag("kg"));
+        }
+    }
+    createSmallTag(value) {
+        const smallElement = document.createElement("small");
+        smallElement.classList.add("text-body-secondary");
+        smallElement.classList.add("fw-light");
+        smallElement.textContent = value;
+        return smallElement;
+    }
+}
+//controller
+class Controller {
+    constructor(nomeDisciplina, idTurma) {
+        this.nomeDisciplina = nomeDisciplina;
+        this.idTurma = idTurma;
+        this.observers = [];
+        this.idUpdate = -1;
+        this.form = new FormTemplate();
+        this.turma = new Turma(idTurma, nomeDisciplina);
+        this.form.submitValues(this);
+    }
+    setIdTurma(id) {
+        this.idTurma = id;
+    }
+    getIdTurma() {
+        return this.idTurma;
+    }
+    setNomeDisciplina(nomeDisciplina) {
+        this.nomeDisciplina = nomeDisciplina;
+    }
+    getNomeDisciplina() {
+        return this.nomeDisciplina;
+    }
+    postAluno(newAluno) {
+        let id = this.turma.getList.length > 0 ? this.turma.getList.length - 1 : 1;
+        newAluno.setId(id.toString());
+        this.addAluno(newAluno);
+        this.notify();
+    }
+    putAluno(newAluno) {
+        this.updateAluno(newAluno);
+        this.notify();
+    }
+    updateAluno(newAluno) {
+        this.turma.updateItem(this.getIdUpdate(), newAluno);
+    }
+    addAluno(newAluno) {
+        this.turma.addItem(newAluno);
+    }
+    editAluno(id) {
+        this.setIdUpdate(id);
+        this.form.setValuesInView(this.turma.getItem(id));
+    }
+    delAluno(id) {
+        this.turma.removeItem(id);
+        this.notify();
+    }
+    setIdUpdate(id) {
+        this.idUpdate = id;
+    }
+    getIdUpdate() {
+        return this.idUpdate;
+    }
+    getTurma() {
+        return this.turma;
+    }
+    getStaticsTurma() {
+        const statics = [
+            this.turma.getNumAlunos(),
+            this.turma.getMediaIdades(),
+            this.turma.getMediaAlturas(),
+            this.turma.getMediaPesos()
+        ];
+        return statics;
+    }
+    addView(observer) {
+        this.observers.push(observer);
+    }
+    notify() {
+        for (const observer of this.observers) {
+            observer.renderizer(this);
+        }
+    }
+}
+const controllerHTML = new Controller("Educação Física", "123");
+const listTemplateTBody = new ListTemplateTBody();
+const aluno = new Aluno("0", "João", 15, 180, 60);
+const alunoA = new Aluno("1", "Joana", 15, 180, 60);
+const alunoB = new Aluno("2", "Joca", 15, 180, 60);
+controllerHTML.addAluno(aluno);
+controllerHTML.addAluno(alunoA);
+controllerHTML.addAluno(alunoB);
+const info = new Info();
+controllerHTML.addView(listTemplateTBody);
+controllerHTML.addView(info);
+controllerHTML.notify();
