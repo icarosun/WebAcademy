@@ -7,17 +7,51 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     </head>
     <body>
-        <!-- table alunos -->
-        <main class = "container">
-            <h1 class = "mt-2 mb-3 text-start fs-4">Alunos:</h1>
-    
-
+        <main class = "container-fluid">
+            <h1 class = "mt-2 mb-3 text-start fs-2">Turma Educação Física, Sala 123</h1>
+            <hr>
+              <div class="row row-cols-1 row-cols-md-4 mb-3 text-center" data-bs-theme="light">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "numAlunos"  class="card-title pricing-card-title">0</h1>
+                        <h4 class="my-0 fw-normal">Quantidade de Alunos</h4>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "meanYear" class="card-title pricing-card-title">0</h1>
+                        <h4 class="my-0 fw-normal">Média de Idade</h4>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col">
+                  <div class="card mb-4 rounded-3 shadow border-primary">
+                    <div class="card-body">
+                      <h1 id = "meanHigh" class="card-title pricing-card-title">0<small class="text-body-secondary fw-light"> m</small></h1>
+                      <h4 class="my-0 fw-normal">Média de Altura</h4>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow border-primary">
+                      <div class="card-body">
+                        <h1 id = "meanWeight" class="card-title pricing-card-title">0<small class="text-body-secondary fw-light"> kg</small></h1>
+                        <h4 class="my-0 fw-normal">Média do Peso</h4>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            <hr>
+            
             <form class = "row g-3 needs-validation">
                 <div class="mb-2">
                     <label for="nome" class="form-label">Nome</label>
                     <input type="text" class="form-control" id="nome" placeholder="Nome Completo" required>
                     <div class="invalid-feedback">
-                        Please insira um Nome Completo.
+                        Por favor, insira um Nome Completo.
                     </div>                               
                 </div>            
                 
@@ -46,17 +80,15 @@
                 </div>
                 
                 <div class="col-auto mt-5">
-                    <button id = "btnConfirm" type="submit" class="btn btn-primary mb-3">Novo aluno</button>
-                    <button id = "btnCancel" type="button" class="btn mb-3" disabled>Cancelar</button>
+                    <button id = "btnConfirm" type="submit" class="btn btn-success mb-3">Novo aluno</button>
+                    <button id = "btnUtils" type="button" class="btn mb-3 btn-outline-secondary">Limpar</button>
                 </div>
 
             </form>
-
-            
-
+            <hr>
             <table class = "table table-responsive table-striped">
             <thead>
-                <tr>
+                <tr class = "table-dark">
                     <th scope = "col">Aluno</th>
                     <th scopre = "col">Idade</th>
                     <th scope = "col">Altura</th>
@@ -68,7 +100,6 @@
             </tbody>
             </table>
         </main>
-        <!-- table alunos -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script src = "js/index.js"></script>
