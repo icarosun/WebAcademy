@@ -8,7 +8,10 @@
     "start": "nodemon src/index.ts",
     "build": "npx tsc",
     "start:prod": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --ext .ts src/",
+    "lint:fix": "eslint --fix --ext .ts src/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npx prettier --write src/"
   },
   "keywords": [],
   "license": "ISC",
