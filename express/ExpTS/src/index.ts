@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import validateEnv from './utils/validateEnv';
 import { logger } from './middleware/logger';
 import router from './router/router';
+import { engine } from 'express-handlebars';
 
 dotenv.config();
 validateEnv();
@@ -13,6 +14,10 @@ const FILE_LOGGER = process.env.FILE_LOGGER ?? 'logger/logger.txt';
 const publicPath = process.cwd();
 
 const app = express();
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', `${__dirname}/views`);
 
 app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
