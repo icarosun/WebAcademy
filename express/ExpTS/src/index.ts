@@ -11,7 +11,7 @@ const FILE_LOGGER = process.env.FILE_LOGGER ?? 'logger/logger.txt';
 
 const app = express();
 
-app.use(logger('completo', FILE_LOGGER));
+app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Requisição ${req.method} ${req.url}`);
