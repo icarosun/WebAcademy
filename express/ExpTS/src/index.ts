@@ -1,7 +1,8 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import validateEnv from './utils/validateEnv';
 import { logger } from './middleware/logger';
+import router from './router/router';
 
 dotenv.config();
 validateEnv();
@@ -9,17 +10,19 @@ validateEnv();
 const PORT = process.env.PORT ?? 9999;
 const FILE_LOGGER = process.env.FILE_LOGGER ?? 'logger/logger.txt';
 
+const publicPath = process.cwd();
+
 const app = express();
 
 app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log(`Requisição ${req.method} ${req.url}`);
-  next();
-});
+app.use('/img', express.static(`${publicPath}/public/img`));
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!!');
+app.use(router);
+
+app.use((req: Request, res: Response) => {
+  res.statusCode = 404;
+  res.end('404!');
 });
 
 app.listen(PORT, () => {
