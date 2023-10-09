@@ -7,10 +7,11 @@ dotenv.config();
 validateEnv();
 
 const PORT = process.env.PORT ?? 9999;
+const FILE_LOGGER = process.env.FILE_LOGGER ?? 'logger/logger.txt';
 
 const app = express();
 
-app.use(logger('completo'));
+app.use(logger('completo', FILE_LOGGER));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Requisição ${req.method} ${req.url}`);
