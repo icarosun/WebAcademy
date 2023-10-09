@@ -1,20 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
+import fs from 'fs';
+import extractDirPath from '../utils/extractDirPath';
 
-export const logger = (typeLogg: 'simples' | 'completo') => {
+async function appendLogToFile(filePath: string, log: string) {
+  try {
+    await fs.promises.appendFile(filePath, log);
+  } catch (error) {
+    console.log('Diretório inexistente');
+    fs.mkdirSync(`./${extractDirPath(filePath)}`, { recursive: true });
+    fs.appendFile(filePath, log, (error) => {
+      if (error) {
+        console.log(error);
+        throw new Error(
+          'Não foi possível criar o diretório e adicionar conteúdo ao arquivo',
+        );
+      }
+    });
+  }
+}
+
+export const logger = (typeLogg: 'simples' | 'completo', path: string) => {
   switch (typeLogg) {
     case 'simples':
       return (req: Request, res: Response, next: NextFunction) => {
-        const data = `${new Date().toISOString()}, ${req.url}, ${req.method}`;
-        // fs.appendFile('./logger/logger.txt', data, (error) => {
-        //   if (error) {
-        //     console.log(error);
-        //   } else {
-        //     console.log('Deu certo');
-        //     next();
-        //   }
-        // });
+        const data = `${new Date().toISOString()}, ${req.url}, ${req.method}\n`;
 
-        console.log(data);
+        appendLogToFile(path, data);
         next();
       };
     case 'completo':
@@ -23,15 +34,7 @@ export const logger = (typeLogg: 'simples' | 'completo') => {
           req.httpVersion
         }, ${req.get('User-Agent')}`;
 
-        //     fs.appendFile('./logger/logger.txt', data, (error) => {
-        //       if (error) {
-        //         console.log(error);
-        //       } else {
-        //         console.log('Deu certo');
-        //         next();
-        //       }
-        //     });
-        console.log(data);
+        appendLogToFile(path, data);
         next();
       };
 
