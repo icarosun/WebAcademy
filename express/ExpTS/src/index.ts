@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import validateEnv from './utils/validateEnv';
-import { logger } from './middleware/logger';
-import router from './router/router';
 import { engine } from 'express-handlebars';
 import sass from 'node-sass-middleware';
+
+import router from './router/router';
+import validateEnv from './utils/validateEnv';
+import logger from './middleware/logger';
 
 dotenv.config();
 validateEnv();

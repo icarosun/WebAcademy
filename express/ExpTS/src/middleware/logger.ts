@@ -19,7 +19,7 @@ async function appendLogToFile(filePath: string, log: string) {
   }
 }
 
-export const logger = (typeLogg: 'simples' | 'completo', path: string) => {
+const logger = (typeLogg: 'simples' | 'completo', path: string) => {
   switch (typeLogg) {
     case 'simples':
       return (req: Request, res: Response, next: NextFunction) => {
@@ -48,3 +48,5 @@ export const logger = (typeLogg: 'simples' | 'completo', path: string) => {
       };
   }
 };
+
+export default logger;
