@@ -14,5 +14,9 @@
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/no-var-requires": "error"
+    },
+    "env": {
+        "browser": true,
+        "node": true,
     }
 }

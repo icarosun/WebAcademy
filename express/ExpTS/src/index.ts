@@ -38,7 +38,10 @@ app.use(
 app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
 app.use('/img', express.static(`${publicPath}/public/img`));
-app.use('/js', express.static(`${publicPath}/public/js`));
+app.use('/js', [
+  express.static(`${publicPath}/public/js`),
+  express.static(`${__dirname}/../node_modules/bootstrap/dist/js`),
+]);
 app.use('/css', express.static(`${__dirname}/../public/css`));
 app.use(
   '/webfonts',
