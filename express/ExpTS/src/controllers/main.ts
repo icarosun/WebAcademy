@@ -67,7 +67,7 @@ const hb4 = (req: Request, res: Response) => {
     { name: 'Sequelize', type: 'ORM tool', poweredByNodejs: true },
   ];
 
-  res.render('hb4', { technologies, layout: false });
+  res.render('hb4', { technologies });
 };
 
 const hb5 = (req: Request, res: Response) => {
@@ -78,7 +78,7 @@ const hb5 = (req: Request, res: Response) => {
     { nome: 'Elaine Harada', sala: 1231 },
   ];
 
-  res.render('hb5', { profes, layout: false });
+  res.render('hb5', { profes });
 };
 
 export default { index, sobre, bemvindo, lorem, hb1, hb2, hb3, hb4, hb5 };
