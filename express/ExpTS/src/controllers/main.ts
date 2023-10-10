@@ -32,13 +32,13 @@ const lorem = (req: Request, res: Response) => {
 };
 
 const hb1 = (req: Request, res: Response) => {
-  res.render('hb1', {
+  res.render('main/hb1', {
     mensagem: 'Olá, você está aprendendo Express + HBS!',
   });
 };
 
 const hb2 = (req: Request, res: Response) => {
-  res.render('hb2', {
+  res.render('main/hb2', {
     poweredByNodejs: true,
     name: 'Express',
     type: 'Framework',
@@ -53,7 +53,7 @@ const hb3 = (req: Request, res: Response) => {
     { nome: 'Elaine Harada', sala: 1231 },
   ];
 
-  res.render('hb3', { profes });
+  res.render('main/hb3', { profes });
 };
 
 const hb4 = (req: Request, res: Response) => {
@@ -67,7 +67,7 @@ const hb4 = (req: Request, res: Response) => {
     { name: 'Sequelize', type: 'ORM tool', poweredByNodejs: true },
   ];
 
-  res.render('hb4', { technologies });
+  res.render('main/hb4', { technologies });
 };
 
 const hb5 = (req: Request, res: Response) => {
@@ -78,7 +78,22 @@ const hb5 = (req: Request, res: Response) => {
     { nome: 'Elaine Harada', sala: 1231 },
   ];
 
-  res.render('hb5', { profes });
+  res.render('main/hb5', { profes });
 };
 
-export default { index, sobre, bemvindo, lorem, hb1, hb2, hb3, hb4, hb5 };
+const pageWithImage = (req: Request, res: Response) => {
+  res.render('main/page-with-image');
+};
+
+export default {
+  index,
+  sobre,
+  bemvindo,
+  lorem,
+  hb1,
+  hb2,
+  hb3,
+  hb4,
+  hb5,
+  pageWithImage,
+};
