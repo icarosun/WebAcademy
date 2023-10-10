@@ -40,6 +40,12 @@ app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 app.use('/img', express.static(`${publicPath}/public/img`));
 app.use('/js', express.static(`${publicPath}/public/js`));
 app.use('/css', express.static(`${__dirname}/../public/css`));
+app.use(
+  '/webfonts',
+  express.static(
+    `${__dirname}/../node_modules/@fortawesome/fontawesome-free/webfonts`,
+  ),
+);
 
 app.use(router);
 
