@@ -26,8 +26,6 @@ app.engine(
 app.set('view engine', 'handlebars');
 app.set('views', `${__dirname}/views`);
 
-app.use(logger('simples', `./logger/${FILE_LOGGER}`));
-
 app.use(
   sass({
     src: `${__dirname}/../public/scss`,
@@ -37,9 +35,11 @@ app.use(
   }),
 );
 
-app.use('/css', express.static(`${__dirname}/../public/css`));
+app.use(logger('simples', `./logger/${FILE_LOGGER}`));
+
 app.use('/img', express.static(`${publicPath}/public/img`));
 app.use('/js', express.static(`${publicPath}/public/js`));
+app.use('/css', express.static(`${__dirname}/../public/css`));
 
 app.use(router);
 
