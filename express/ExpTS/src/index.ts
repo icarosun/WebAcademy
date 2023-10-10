@@ -4,6 +4,7 @@ import validateEnv from './utils/validateEnv';
 import { logger } from './middleware/logger';
 import router from './router/router';
 import { engine } from 'express-handlebars';
+import sass from 'node-sass-middleware';
 
 dotenv.config();
 validateEnv();
@@ -26,6 +27,16 @@ app.set('views', `${__dirname}/views`);
 
 app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
+app.use(
+  sass({
+    src: `${__dirname}/../public/scss`,
+    dest: `${__dirname}/../public/css`,
+    outputStyle: 'compressed',
+    prefix: '/css',
+  }),
+);
+
+app.use('/css', express.static(`${__dirname}/../public/css`));
 app.use('/img', express.static(`${publicPath}/public/img`));
 app.use('/js', express.static(`${publicPath}/public/js`));
 
