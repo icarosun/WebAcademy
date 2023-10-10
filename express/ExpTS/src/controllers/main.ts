@@ -100,4 +100,5 @@ export default {
   hb4,
   hb5,
   pageWithImage,
+  ui,
 };
