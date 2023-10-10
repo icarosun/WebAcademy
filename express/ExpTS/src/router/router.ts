@@ -71,7 +71,7 @@ router.get('/hb4', (req: Request, res: Response) => {
     { name: 'Sequelize', type: 'ORM tool', poweredByNodejs: true },
   ];
 
-  res.render('hb4', { technologies });
+  res.render('hb4', { technologies, layout: false });
 });
 
 export default router;
