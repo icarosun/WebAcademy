@@ -85,6 +85,10 @@ const pageWithImage = (req: Request, res: Response) => {
   res.render('main/pageWithImage');
 };
 
+const ui = (req: Request, res: Response) => {
+  res.render('main/ui');
+};
+
 export default {
   index,
   sobre,
