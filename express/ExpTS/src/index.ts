@@ -27,6 +27,7 @@ app.set('views', `${__dirname}/views`);
 app.use(logger('simples', `./logger/${FILE_LOGGER}`));
 
 app.use('/img', express.static(`${publicPath}/public/img`));
+app.use('/js', express.static(`${publicPath}/public/js`));
 
 app.use(router);
 
