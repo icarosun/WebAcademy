@@ -82,7 +82,7 @@ const hb5 = (req: Request, res: Response) => {
 };
 
 const pageWithImage = (req: Request, res: Response) => {
-  res.render('main/page-with-image');
+  res.render('main/pageWithImage');
 };
 
 export default {
