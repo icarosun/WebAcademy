@@ -3,3 +3,8 @@ export interface Tech {
   type: string;
   poweredByNodejs: boolean;
 }
+
+export interface Prof {
+  nome: string;
+  sala: string;
+}
