@@ -27,3 +27,11 @@ export async function updateProduto(
 ): Promise<Produto> {
   return await prisma.produto.update({ data: produto, where: { id: id } });
 }
+
+export async function removeProduto(id: string) {
+  return await prisma.produto.delete({
+    where: {
+      id: id
+    }
+  });
+}

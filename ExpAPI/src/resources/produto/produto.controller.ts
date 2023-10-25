@@ -4,7 +4,8 @@ import {
   getAllProdutos,
   produtoJaExiste,
   getProduto,
-  updateProduto
+  updateProduto,
+  removeProduto
 } from './produto.service';
 import { CreateProdutoDto } from './produto.types';
 
@@ -70,6 +71,21 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function remove(req: Request, res: Response) {}
+async function remove(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    const produto = await getProduto(id);
+
+    if (!produto)
+      return res.status(404).json({ msg: 'Produto não encontrado' });
+
+    await removeProduto(id);
+
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
 
 export default { index, create, read, update, remove };
