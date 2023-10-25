@@ -1,6 +1,6 @@
 # WebAcademy
 
-Curso Web Academy da UFAM
+Curso Web Academy
 
 ## Disciplinas
 
