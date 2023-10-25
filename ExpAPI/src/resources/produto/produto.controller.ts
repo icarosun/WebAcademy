@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-
-//const index = (Request, Response) => {
-//conectar com o banco dedados
-//gerar a lista
-//passar para json
-//response com json e cod
-//};
+import { getAllProdutos } from './produto.service';
 
 async function index(req: Request, res: Response) {
-  res.send('oiii');
+  try {
+    const produtos = await getAllProdutos();
+    res.status(200).json(produtos);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 }
+
 async function create(req: Request, res: Response) {}
 async function read(req: Request, res: Response) {}
 async function update(req: Request, res: Response) {}
