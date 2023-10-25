@@ -1,6 +1,6 @@
 # WebAcademy
 
-Curso Web Academy
+Curso de capacitação e Desenvolvimento em Web Full Stack
 
 ## Disciplinas
 
