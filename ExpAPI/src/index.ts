@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT ?? 7777;
 
 app.use(morgan('combined'));
+app.use(express.json());
 app.use(router);
 
 app.listen(PORT, () => {
