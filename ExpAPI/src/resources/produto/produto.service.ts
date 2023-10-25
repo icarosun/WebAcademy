@@ -13,4 +13,6 @@ export async function createProduto(
   return await prisma.produto.create({ data: produto });
 }
 
-// export async produtoJaExiste
+export async function produtoJaExiste(nome: string): Promise<boolean> {
+  return !!(await prisma.produto.findUnique({ where: { nome } }));
+}
