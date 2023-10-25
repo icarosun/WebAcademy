@@ -1,6 +1,8 @@
 # WebAcademy
 
-Curso de capacitação e Desenvolvimento em Web Full Stack
+Curso de Capacitação e Desenvolvimento em Web Full Stack
+
+O Web Academy é um projeto realizado pela Universidade Federal do Amazonas (UFAM), em parceria com a Motorola Mobility Comércio de Produtos Eletrônicos Ltda e Flextronics da Amazônia Ltda.
 
 ## Disciplinas
 
