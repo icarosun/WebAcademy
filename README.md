@@ -6,7 +6,7 @@ Curso Web Academy
 
 - [WACAD008 - Typescript](typescript)
 - [WACAD009 - Express](express)
-- [wACAD011 - Cookies, Sessões e Autenticação (API)](./ExpAPI)
+- [WACAD011 - Cookies, Sessões e Autenticação (API)](./ExpAPI)
 
 ### Typescript
 
