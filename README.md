@@ -6,7 +6,7 @@ Curso Web Academy da UFAM
 
 - [WACAD008 - Typescript](typescript)
 - [WACAD009 - Express](express)
-- [wACAD011 - Cookies (API)](api)
+- [wACAD011 - Cookies (API)](./ExpAPI)
 
 ### Typescript
 
