@@ -21,4 +21,4 @@ Curso Web Academy da UFAM
 
 ### Api
 
-- [Exerecise](./ExpAPI/)
+- [Exercise](./ExpAPI)
