@@ -1,5 +1,5 @@
 import { PrismaClient, Produto } from '@prisma/client';
-import { CreateProdutoDto } from './produto.types';
+import { CreateProdutoDto, UpdateProdutoDto } from './produto.types';
 
 const prisma = new PrismaClient();
 
@@ -21,4 +21,9 @@ export async function getProduto(id: string): Promise<Produto | null> {
   return await prisma.produto.findUnique({ where: { id } });
 }
 
-export async function updateProduto();
+export async function updateProduto(
+  id: string,
+  produto: UpdateProdutoDto
+): Promise<Produto> {
+  return await prisma.produto.update({ data: produto, where: { id: id } });
+}

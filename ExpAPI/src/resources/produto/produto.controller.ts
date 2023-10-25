@@ -3,7 +3,8 @@ import {
   createProduto,
   getAllProdutos,
   produtoJaExiste,
-  getProduto
+  getProduto,
+  updateProduto
 } from './produto.service';
 import { CreateProdutoDto } from './produto.types';
 
@@ -43,7 +44,32 @@ async function read(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {}
+async function update(req: Request, res: Response) {
+  const id = req.params.id;
+  const produto = req.body;
+  try {
+    const produtoAtual = await getProduto(id);
+
+    if (!produtoAtual)
+      return res.status(404).json({ msg: 'Produto não encontrado' });
+
+    if (
+      produtoAtual?.nome !== produto.nome &&
+      (await produtoJaExiste(produto.nome))
+    ) {
+      return res
+        .status(400)
+        .json({ msg: 'Já existe um produto com o nome informado' });
+    }
+
+    const produtoAtualizado = await updateProduto(id, produto);
+
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 async function remove(req: Request, res: Response) {}
 
 export default { index, create, read, update, remove };
