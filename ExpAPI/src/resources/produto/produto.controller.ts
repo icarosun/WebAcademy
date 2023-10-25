@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import {
   createProduto,
   getAllProdutos,
-  produtoJaExiste
+  produtoJaExiste,
+  getProduto
 } from './produto.service';
 import { CreateProdutoDto } from './produto.types';
 
@@ -28,7 +29,20 @@ async function create(req: Request, res: Response) {
     res.status(500).json(error);
   }
 }
-async function read(req: Request, res: Response) {}
+
+async function read(req: Request, res: Response) {
+  const id = req.params.id;
+
+  try {
+    const produto = await getProduto(id);
+    if (!produto)
+      return res.status(404).json({ msg: 'Produto não encontrado' });
+    res.status(200).json(produto);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 async function update(req: Request, res: Response) {}
 async function remove(req: Request, res: Response) {}
 
