@@ -1,14 +1,24 @@
 # WebAcademy
-Curso Web Academy da UFAM
+
+Curso Web Academy
 
 ## Disciplinas
+
 - [WACAD008 - Typescript](typescript)
 - [WACAD009 - Express](express)
+- [wACAD011 - Cookies, Sessões e Autenticação (API)](./ExpAPI)
 
-# Typescript
-## Laboratórios: 
+### Typescript
+
+#### Laboratórios:
+
 - [Laboratório 02](./typescript/laboratorio_02)
 - [Laboratório 03](./typescript/laboratorio_03)
 
-# Express
+### Express
+
 - [Exercises](./express)
+
+### Api
+
+- [Exercise](./ExpAPI)
