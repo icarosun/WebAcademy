@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Cliente {
+  cpf             String   @id @db.Char(11)
+  nome            String   @db.VarChar(100)
+  celular         String   @db.VarChar(13)
+  email           String   @unique @db.VarChar(50)
+  data_nascimento DateTime @db.Date
+
+  @@map("clientes")
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
