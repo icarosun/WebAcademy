@@ -13,14 +13,14 @@ model Cliente {
   data_nascimento DateTime          @db.Date
   enderecos       clienteEndereco[]
 
-  @@map("clientes")
+  @@map("Cliente")
 }
 
 model Endereco {
   cep      String            @id @db.Char(9)
   clientes clienteEndereco[]
 
-  @@map("enderecos")
+  @@map("Endereco")
 }
 
 model clienteEndereco {
@@ -33,7 +33,7 @@ model clienteEndereco {
   compras     Compra[]
 
   @@id([clienteCpf, enderecoCep])
-  @@map("clienteEnderecos")
+  @@map("clienteEndereco")
 }
 
 model Compra {
@@ -44,12 +44,12 @@ model Compra {
   Pagamento             Pagamento @relation(fields: [pagamentoCodPagamento], references: [codPagamento])
   pagamentoCodPagamento String    @db.Char(40)
 
-  clienteEndereco            clienteEndereco  @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
-  clienteEnderecoClienteCpf  String           @db.Char(11)
-  clienteEnderecoEnderecoCep String           @db.Char(9)
-  produtos                   compraProdutos[]
+  clienteEndereco            clienteEndereco @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
+  clienteEnderecoClienteCpf  String          @db.Char(11)
+  clienteEnderecoEnderecoCep String          @db.Char(9)
+  produtos                   compraProduto[]
 
-  @@map("compras")
+  @@map("Compra")
 }
 
 model Pagamento {
@@ -57,7 +57,7 @@ model Pagamento {
   tipo         String   @unique @db.VarChar(10)
   compras      Compra[]
 
-  @@map("pagamentos")
+  @@map("Pagamento")
 }
 
 model Categoria {
@@ -66,7 +66,7 @@ model Categoria {
 
   subcategorias Subcategoria[]
 
-  @@map("categorias")
+  @@map("Categoria")
 }
 
 model Subcategoria {
@@ -77,7 +77,7 @@ model Subcategoria {
 
   produtos Produto[]
 
-  @@map("subcategorias")
+  @@map("Subcategoria")
 }
 
 model Produto {
@@ -91,18 +91,19 @@ model Produto {
   Subcategoria                Subcategoria? @relation(fields: [subcategoriaCodSubcategoria], references: [codSubcategoria])
   subcategoriaCodSubcategoria String?       @db.Char(36)
 
-  compras compraProdutos[]
+  compras compraProduto[]
 
-  @@map("produtos")
+  @@map("Produto")
 }
 
-model compraProdutos {
+model compraProduto {
   Compra            Compra  @relation(fields: [compraCodCompra], references: [codCompra])
   compraCodCompra   String  @db.Char(36)
   Produto           Produto @relation(fields: [produtoCodProduto], references: [codProduto])
   produtoCodProduto String  @db.Char(36)
 
   @@id([compraCodCompra, produtoCodProduto])
+  @@map("compraProduto")
 }
 
 datasource db {
