@@ -28,9 +28,35 @@ model clienteEndereco {
   clienteCpf  String   @db.Char(11)
   Endereco    Endereco @relation(fields: [enderecoCep], references: [cep])
   enderecoCep String   @db.Char(9)
+  numero      Int      @db.Int
+  complemento String?  @db.Text
+  compras     Compra[]
 
   @@id([clienteCpf, enderecoCep])
-  @@map("clientesEnderecos")
+  @@map("clienteEnderecos")
+}
+
+model Compra {
+  codCompra  String   @id @default(uuid()) @db.Char(36)
+  dataCompra DateTime @map("data_compra") @db.DateTime()
+  desconto   Decimal  @db.Decimal
+
+  Pagamento             Pagamento @relation(fields: [pagamentoCodPagamento], references: [codPagamento])
+  pagamentoCodPagamento String    @db.Char(40)
+
+  clienteEndereco            clienteEndereco @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
+  clienteEnderecoClienteCpf  String          @db.Char(11)
+  clienteEnderecoEnderecoCep String          @db.Char(9)
+
+  @@map("compras")
+}
+
+model Pagamento {
+  codPagamento String   @id @default(uuid()) @db.Char(36)
+  tipo         String   @unique @db.VarChar(10)
+  compras      Compra[]
+
+  @@map("pagamentos")
 }
 
 datasource db {
