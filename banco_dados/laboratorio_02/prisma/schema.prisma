@@ -59,6 +59,11 @@ model Pagamento {
   @@map("pagamentos")
 }
 
+model Categoria {
+  codCategoria String @id @default(uuid()) @db.Char(36)
+  nome         String @unique @db.VarChar(20)
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
