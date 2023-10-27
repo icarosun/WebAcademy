@@ -6,13 +6,31 @@ generator client {
 }
 
 model Cliente {
-  cpf             String   @id @db.Char(11)
-  nome            String   @db.VarChar(100)
-  celular         String   @db.VarChar(13)
-  email           String   @unique @db.VarChar(50)
-  data_nascimento DateTime @db.Date
+  cpf             String            @id @db.Char(11)
+  nome            String            @db.VarChar(100)
+  celular         String            @db.VarChar(13)
+  email           String            @unique @db.VarChar(50)
+  data_nascimento DateTime          @db.Date
+  enderecos       clienteEndereco[]
 
   @@map("clientes")
+}
+
+model Endereco {
+  cep      String            @id @db.Char(9)
+  clientes clienteEndereco[]
+
+  @@map("enderecos")
+}
+
+model clienteEndereco {
+  Cliente     Cliente  @relation(fields: [clienteCpf], references: [cpf])
+  clienteCpf  String   @db.Char(11)
+  Endereco    Endereco @relation(fields: [enderecoCep], references: [cep])
+  enderecoCep String   @db.Char(9)
+
+  @@id([clienteCpf, enderecoCep])
+  @@map("clientesEnderecos")
 }
 
 datasource db {
