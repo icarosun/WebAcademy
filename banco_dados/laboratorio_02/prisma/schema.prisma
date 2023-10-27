@@ -11,6 +11,7 @@ model Cliente {
   celular         String            @db.VarChar(13)
   email           String            @unique @db.VarChar(50)
   data_nascimento DateTime          @db.Date
+  senha           String            @db.Char(80)
   enderecos       clienteEndereco[]
 
   @@map("Cliente")
