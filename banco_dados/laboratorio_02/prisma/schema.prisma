@@ -44,9 +44,10 @@ model Compra {
   Pagamento             Pagamento @relation(fields: [pagamentoCodPagamento], references: [codPagamento])
   pagamentoCodPagamento String    @db.Char(40)
 
-  clienteEndereco            clienteEndereco @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
-  clienteEnderecoClienteCpf  String          @db.Char(11)
-  clienteEnderecoEnderecoCep String          @db.Char(9)
+  clienteEndereco            clienteEndereco  @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
+  clienteEnderecoClienteCpf  String           @db.Char(11)
+  clienteEnderecoEnderecoCep String           @db.Char(9)
+  produtos                   compraProdutos[]
 
   @@map("compras")
 }
@@ -64,6 +65,8 @@ model Categoria {
   nome         String @unique @db.VarChar(20)
 
   subcategorias Subcategoria[]
+
+  @@map("categorias")
 }
 
 model Subcategoria {
@@ -71,6 +74,35 @@ model Subcategoria {
   nome                  String     @unique @db.VarChar(20)
   Categoria             Categoria? @relation(fields: [categoriaCodCategoria], references: [codCategoria])
   categoriaCodCategoria String?    @db.Char(36)
+
+  produtos Produto[]
+
+  @@map("subcategorias")
+}
+
+model Produto {
+  codProduto  String  @id @default(uuid()) @db.Char(36)
+  quantidade  Int     @db.Int
+  precoBase   Decimal @map("preco_base") @db.Decimal
+  fabricante  String  @db.VarChar(50)
+  modelo      String  @db.VarChar(100)
+  numeroSerie String? @map("numero_serie") @db.VarChar(100)
+
+  Subcategoria                Subcategoria? @relation(fields: [subcategoriaCodSubcategoria], references: [codSubcategoria])
+  subcategoriaCodSubcategoria String?       @db.Char(36)
+
+  compras compraProdutos[]
+
+  @@map("produtos")
+}
+
+model compraProdutos {
+  Compra            Compra  @relation(fields: [compraCodCompra], references: [codCompra])
+  compraCodCompra   String  @db.Char(36)
+  Produto           Produto @relation(fields: [produtoCodProduto], references: [codProduto])
+  produtoCodProduto String  @db.Char(36)
+
+  @@id([compraCodCompra, produtoCodProduto])
 }
 
 datasource db {
