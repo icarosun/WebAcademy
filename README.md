@@ -8,6 +8,7 @@ O Web Academy é um projeto realizado pela Universidade Federal do Amazonas (UFA
 
 - [WACAD008 - Typescript](typescript)
 - [WACAD009 - Express](express)
+- [WACAD010 - Fundamentos de Banco de Dados](./banco_dados/)
 - [WACAD011 - Cookies, Sessões e Autenticação (API)](./ExpAPI)
 
 ### Typescript
@@ -20,6 +21,13 @@ O Web Academy é um projeto realizado pela Universidade Federal do Amazonas (UFA
 ### Express
 
 - [Exercises](./express)
+
+### Fundamentos de Banco de Dados
+
+#### Laboratórios
+
+- [Laboratório 01](./banco_dados/laboratorio_01/)
+- [Laboratório 02](.//banco_dados/laboratorio_02/)
 
 ### Api
 
