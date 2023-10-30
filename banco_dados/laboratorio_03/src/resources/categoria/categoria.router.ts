@@ -3,7 +3,7 @@ import categoriaController from "./categoria.controller";
 
 const router = Router();
 
-router.get("/", categoriaController.getAllCategoria);
+router.get("/", categoriaController.index);
 router.post("/", categoriaController.create);
 router.get("/:id", categoriaController.read);
 router.put("/:id", categoriaController.update);

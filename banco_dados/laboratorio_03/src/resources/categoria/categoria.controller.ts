@@ -5,7 +5,18 @@ import {
   getCategoria,
   updateCategoria,
   deleteCategoria,
+  getAllCategoria,
 } from "./categoria.service";
+
+async function index(req: Request, res: Response) {
+  try {
+    const categorias = await getAllCategoria();
+
+    res.status(200).json(categorias);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
 
 async function create(req: Request, res: Response) {
   try {
@@ -79,4 +90,4 @@ export async function remove(req: Request, res: Response) {
   }
 }
 
-export default { create, read, update, remove };
+export default { create, read, update, remove, index };

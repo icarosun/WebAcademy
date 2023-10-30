@@ -3,6 +3,10 @@ import { CreateCategoriaDto, UpdateCategoriaDto } from "./categoria.types";
 
 const prisma = new PrismaClient();
 
+export async function getAllCategoria(): Promise<Categoria[]> {
+  return await prisma.categoria.findMany();
+}
+
 export async function createCategoria(
   categoria: CreateCategoriaDto
 ): Promise<Categoria> {
@@ -27,4 +31,8 @@ export async function updateCategoria(
     },
     data: categoria,
   });
+}
+
+export async function deleteCategoria(id: string) {
+  await prisma.categoria.delete({ where: { codCategoria: id } });
 }
