@@ -1,9 +1,8 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import categoriaRouter from "../resources/categoria/categoria.router";
 
 const v1Router = Router();
 
-v1Router.use("/categoria", (req: Request, res: Response) => {
-  res.send("Olá dentro da categoria");
-});
+v1Router.use("/categoria", categoriaRouter);
 
 export default v1Router;
