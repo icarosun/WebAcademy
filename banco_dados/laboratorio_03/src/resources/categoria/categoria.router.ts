@@ -6,7 +6,7 @@ const router = Router();
 router.get("/");
 router.post("/", categoriaController.create);
 router.get("/:id", categoriaController.read);
-router.put("/:id");
+router.put("/:id", categoriaController.update);
 router.delete("/:id");
 
 export default router;

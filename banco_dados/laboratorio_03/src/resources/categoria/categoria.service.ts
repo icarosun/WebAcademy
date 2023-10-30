@@ -1,5 +1,5 @@
 import { PrismaClient, Categoria } from "@prisma/client";
-import { CreateCategoriaDto } from "./categoria.types";
+import { CreateCategoriaDto, UpdateCategoriaDto } from "./categoria.types";
 
 const prisma = new PrismaClient();
 
@@ -9,10 +9,22 @@ export async function createCategoria(
   return await prisma.categoria.create({ data: categoria });
 }
 
-export async function categoriaJaExiste(nome: string) {
+export async function categoriaJaExiste(nome: string): Promise<boolean> {
   return !!(await prisma.categoria.findUnique({ where: { nome } }));
 }
 
 export async function getCategoria(id: string): Promise<Categoria | null> {
   return await prisma.categoria.findUnique({ where: { codCategoria: id } });
+}
+
+export async function updateCategoria(
+  id: string,
+  categoria: UpdateCategoriaDto
+) {
+  await prisma.categoria.update({
+    where: {
+      codCategoria: id,
+    },
+    data: categoria,
+  });
 }

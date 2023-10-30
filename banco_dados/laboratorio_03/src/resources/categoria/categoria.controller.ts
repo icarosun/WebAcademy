@@ -3,6 +3,7 @@ import {
   createCategoria,
   categoriaJaExiste,
   getCategoria,
+  updateCategoria,
 } from "./categoria.service";
 
 async function create(req: Request, res: Response) {
@@ -35,4 +36,31 @@ async function read(req: Request, res: Response) {
   }
 }
 
-export default { create, read };
+async function update(req: Request, res: Response) {
+  const { id } = req.params;
+  const categoria = req.body;
+
+  try {
+    const categoriaAtual = await getCategoria(id);
+
+    if (!categoriaAtual)
+      return res.status(400).json({ msg: "Categoria não encontrado" });
+
+    if (
+      categoriaAtual?.nome !== categoria.nome &&
+      (await categoriaJaExiste(categoria.nome))
+    ) {
+      return res
+        .status(400)
+        .json({ msg: "Já existe uma categoria com o nome informado" });
+    }
+
+    const categoriaAtualizada = await updateCategoria(id, categoria);
+
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+export default { create, read, update };
