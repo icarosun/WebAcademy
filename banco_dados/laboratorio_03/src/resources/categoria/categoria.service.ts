@@ -12,3 +12,7 @@ export async function createCategoria(
 export async function categoriaJaExiste(nome: string) {
   return !!(await prisma.categoria.findUnique({ where: { nome } }));
 }
+
+export async function getCategoria(id: string): Promise<Categoria | null> {
+  return await prisma.categoria.findUnique({ where: { codCategoria: id } });
+}

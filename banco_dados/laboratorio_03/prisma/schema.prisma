@@ -77,7 +77,7 @@ model Categoria {
 
 model Subcategoria {
   codSubcategoria       String     @id @default(uuid()) @db.Char(36)
-  nome                  String     @unique @db.VarChar(20)
+  nome                  String     @db.VarChar(20)
   Categoria             Categoria? @relation(fields: [categoriaCodCategoria], references: [codCategoria])
   categoriaCodCategoria String?    @db.Char(36)
 

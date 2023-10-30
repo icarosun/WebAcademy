@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/");
 router.post("/", categoriaController.create);
-router.get("/:id");
+router.get("/:id", categoriaController.read);
 router.put("/:id");
 router.delete("/:id");
 
