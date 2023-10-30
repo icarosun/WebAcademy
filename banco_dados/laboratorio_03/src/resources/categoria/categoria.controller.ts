@@ -4,6 +4,7 @@ import {
   categoriaJaExiste,
   getCategoria,
   updateCategoria,
+  deleteCategoria,
 } from "./categoria.service";
 
 async function create(req: Request, res: Response) {
@@ -36,7 +37,7 @@ async function read(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+export async function update(req: Request, res: Response) {
   const { id } = req.params;
   const categoria = req.body;
 
@@ -63,4 +64,19 @@ async function update(req: Request, res: Response) {
   }
 }
 
-export default { create, read, update };
+export async function remove(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    const categoria = await getCategoria(id);
+
+    if (!categoria)
+      return res.status(400).json({ msg: "Categoria não encontrado" });
+
+    await deleteCategoria(id);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+export default { create, read, update, remove };
