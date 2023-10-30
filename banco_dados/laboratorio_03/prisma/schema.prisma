@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  cpf             String            @id @db.Char(11)
+  nome            String            @db.VarChar(100)
+  celular         String            @db.VarChar(13)
+  email           String            @unique @db.VarChar(50)
+  data_nascimento DateTime          @db.Date
+  senha           String            @db.Char(80)
+  enderecos       clienteEndereco[]
+
+  @@map("Cliente")
+}
+
+model Endereco {
+  cep      String            @id @db.Char(9)
+  clientes clienteEndereco[]
+
+  @@map("Endereco")
+}
+
+model clienteEndereco {
+  Cliente     Cliente  @relation(fields: [clienteCpf], references: [cpf])
+  clienteCpf  String   @db.Char(11)
+  Endereco    Endereco @relation(fields: [enderecoCep], references: [cep])
+  enderecoCep String   @db.Char(9)
+  numero      Int      @db.Int
+  complemento String?  @db.Text
+  compras     Compra[]
+
+  @@id([clienteCpf, enderecoCep])
+  @@map("clienteEndereco")
+}
+
+model Compra {
+  codCompra  String   @id @default(uuid()) @db.Char(36)
+  dataCompra DateTime @map("data_compra") @db.DateTime()
+  desconto   Decimal  @db.Decimal
+
+  Pagamento             Pagamento @relation(fields: [pagamentoCodPagamento], references: [codPagamento])
+  pagamentoCodPagamento String    @db.Char(40)
+
+  clienteEndereco            clienteEndereco @relation(fields: [clienteEnderecoClienteCpf, clienteEnderecoEnderecoCep], references: [clienteCpf, enderecoCep])
+  clienteEnderecoClienteCpf  String          @db.Char(11)
+  clienteEnderecoEnderecoCep String          @db.Char(9)
+  produtos                   compraProduto[]
+
+  @@map("Compra")
+}
+
+model Pagamento {
+  codPagamento String   @id @default(uuid()) @db.Char(36)
+  tipo         String   @unique @db.VarChar(10)
+  compras      Compra[]
+
+  @@map("Pagamento")
+}
+
+model Categoria {
+  codCategoria String @id @default(uuid()) @db.Char(36)
+  nome         String @unique @db.VarChar(20)
+
+  subcategorias Subcategoria[]
+
+  @@map("Categoria")
+}
+
+model Subcategoria {
+  codSubcategoria       String     @id @default(uuid()) @db.Char(36)
+  nome                  String     @unique @db.VarChar(20)
+  Categoria             Categoria? @relation(fields: [categoriaCodCategoria], references: [codCategoria])
+  categoriaCodCategoria String?    @db.Char(36)
+
+  produtos Produto[]
+
+  @@map("Subcategoria")
+}
+
+model Produto {
+  codProduto  String  @id @default(uuid()) @db.Char(36)
+  quantidade  Int     @db.Int
+  precoBase   Decimal @map("preco_base") @db.Decimal
+  fabricante  String  @db.VarChar(50)
+  modelo      String  @db.VarChar(100)
+  numeroSerie String? @map("numero_serie") @db.VarChar(100)
+
+  Subcategoria                Subcategoria? @relation(fields: [subcategoriaCodSubcategoria], references: [codSubcategoria])
+  subcategoriaCodSubcategoria String?       @db.Char(36)
+
+  compras compraProduto[]
+
+  @@map("Produto")
+}
+
+model compraProduto {
+  Compra            Compra  @relation(fields: [compraCodCompra], references: [codCompra])
+  compraCodCompra   String  @db.Char(36)
+  Produto           Produto @relation(fields: [produtoCodProduto], references: [codProduto])
+  produtoCodProduto String  @db.Char(36)
+
+  @@id([compraCodCompra, produtoCodProduto])
+  @@map("compraProduto")
+}
