@@ -85,6 +85,8 @@ export async function remove(req: Request, res: Response) {
       return res.status(400).json({ msg: "Categoria não encontrado" });
 
     await deleteCategoria(id);
+
+    res.status(204).json();
   } catch (error) {
     res.status(500).json(error);
   }
