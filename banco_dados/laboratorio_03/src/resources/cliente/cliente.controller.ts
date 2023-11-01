@@ -14,5 +14,3 @@ async function create(req: Request, res: Response) {
     res.status(500).json(error);
   }
 }
-
-export default { create };

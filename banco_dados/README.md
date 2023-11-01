@@ -10,7 +10,7 @@ Diretório criado para desenvolver as atividades da disciplina de Fundamentos de
 
 - [Laboratório 01](./laboratorio_01/)
 - [Laboratório 02](./laboratorio_02/)
-- [Laboratório 03]
+- [Laboratório 03](./laboratorio_03/)
 
 No laboratório 01, contém os arquivos finais utilizados no desenvolvimento do laboratório 01, tais como:
 

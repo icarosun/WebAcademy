@@ -27,7 +27,8 @@ O Web Academy é um projeto realizado pela Universidade Federal do Amazonas (UFA
 #### Laboratórios
 
 - [Laboratório 01](./banco_dados/laboratorio_01/)
-- [Laboratório 02](.//banco_dados/laboratorio_02/)
+- [Laboratório 02](./banco_dados/laboratorio_02/)
+- [Laboratório 03](./banco_dados/laboratorio_03/)
 
 ### Api
 
