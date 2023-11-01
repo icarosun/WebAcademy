@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import validateEnv from "./utils/validateEnv";
 import router from "./router";
 import cookieParser from "cookie-parser";
+import setLangCookie from "./middleware/setLangCookie";
 
 dotenv.config();
 validateEnv();
@@ -15,6 +16,7 @@ const PORT = process.env.PORT ?? 7777;
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(cookieParser());
+app.use(setLangCookie);
 app.use(router);
 
 app.listen(PORT, () => {
