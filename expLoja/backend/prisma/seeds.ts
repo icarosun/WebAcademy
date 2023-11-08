@@ -19,5 +19,6 @@ tipoUsuarioSeeds()
     prisma.$disconnect();
   })
   .catch((err) => {
+    prisma.$disconnect();
     console.log(err);
   });
