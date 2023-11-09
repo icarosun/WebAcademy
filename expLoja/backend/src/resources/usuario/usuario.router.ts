@@ -5,10 +5,10 @@ import usuarioController from "./usuario.controller"
 const router = Router();
 
 router.get("/", usuarioController.index);
-router.post("/", usuarioController.create);
-router.get("/:id", usuarioController.read);
-router.put("/:id", usuarioController.update);
-router.delete("/:id", usuarioController.remoev);
+//router.post("/", usuarioController.create);
+//router.get("/:id", usuarioController.read);
+//router.put("/:id", usuarioController.update);
+//router.delete("/:id", usuarioController.remoev);
 
 export default router;
 
