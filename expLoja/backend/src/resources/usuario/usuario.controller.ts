@@ -17,7 +17,7 @@ async function create(req: Request, res: Response) {
   try {
     const newUsuario = req.body as CreateUsuarioDto;
 
-    if(await buscaUsuarioPorEmail(newUsuario.email)) return res.status(400).json({message: "Email cadastrado, use outro"})
+    if(await buscaUsuarioPorEmail(newUsuario.email)) return res.status(409).json({message: "Email cadastrado, use outro"})
 
     const usuarioCreated = await createUsuario(newUsuario);
 

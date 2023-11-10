@@ -8,6 +8,6 @@ const router = Router();
 
 router.use("/usuario", usuarioRouter);
 router.use("/produto", produtoRouter);
-router.use("/linguageM", linguagemRouter);
+router.use("/linguagem", linguagemRouter);
 
 export default router;
