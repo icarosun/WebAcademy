@@ -29,3 +29,4 @@ export const autenticate = async (usuario: LoginDto): Promise<Usuario | null> =>
   return foundUsuario;
   
 }
+

@@ -23,11 +23,21 @@ async function login(req: Request, res: Response) {
 
     if (!usuario) return res.status(401).json({ message: "Email e/ou senha incorreots"});
 
-    res.status(200).json(usuario);
+    req.session.uid = usuario.id;
+    req.session.tipoUsuario = usuario.tipoUsuarioId;
+
+    res.status(200).json({message: "Usuário autenticado com sucesso"});
   } catch (error) {
     res.status(500).json(error);
   } 
 }
 
-async function logout(req: Request, res: Response) {}
+async function logout(req: Request, res: Response) {
+  req.session.destroy((error) => {
+    if (error) return res.status(500).json({ message: "Error ao efetuar logout"});
+
+    res.status(200).json({message: "Usuário deslogado com sucesso"});
+  });
+}
+
 export default { signup, login, logout };

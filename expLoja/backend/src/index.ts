@@ -9,6 +9,13 @@ import validateEnv from "./utils/validateEnv";
 import router from "./router";
 import setLangCookie from "./middleware/setLangCookie";
 
+declare module "express-session" {
+  interface SessionData {
+    uid: string;
+    tipoUsuario: string
+  }
+}
+
 dotenv.config();
 validateEnv();
 
