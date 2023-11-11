@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 
 import { getAllUsuarios, buscaUsuarioPorId, buscaUsuarioPorEmail, createUsuario, updateUsuario, deleteUsuario} from "./usuario.service";
 import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
+import { TiposUsuarios } from "../tipoUsuario/tipoUsuario.constants";
 
 async function index (req: Request, res: Response) {
   try {
-    const usuarios = await getAllUsuarios();
+    const rotulo = req.query.rotulo as TiposUsuarios;
+    const usuarios = await getAllUsuarios(rotulo);
 
     res.status(200).json(usuarios);
   } catch (error) {

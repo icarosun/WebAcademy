@@ -1,10 +1,12 @@
 import { PrismaClient, Usuario } from "@prisma/client";
 import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
+import { TiposUsuarios } from "../tipoUsuario/tipoUsuario.constants";
 
 const prisma = new PrismaClient();
 
-export const getAllUsuarios = async (): Promise<Usuario []> => {
-  return await prisma.usuario.findMany();
+export const getAllUsuarios = async (rotulo?: TiposUsuarios): Promise<Usuario []> => {
+  if (!rotulo) return await prisma.usuario.findMany();
+  return await prisma.usuario.findMany({ where: { tipoUsuarioId: rotulo}});
 }
 
 export const createUsuario = async (usuario: CreateUsuarioDto): Promise<Usuario> => {
