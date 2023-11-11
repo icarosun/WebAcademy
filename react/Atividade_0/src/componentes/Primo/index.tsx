@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function Primo() {
   const [n1, SetN1] = useState(0);
 
-  function Primo() {
+  function EPrimo() {
     const raiz = Math.sqrt(n1);
     let primo = true;
 
@@ -34,7 +34,7 @@ export default function Primo() {
         onChange={(e) => SetN1(parseInt(e.target.value))}
       />
 
-      <button onClick={() => Primo()}>Verificar</button>
+      <button onClick={() => EPrimo()}>Verificar</button>
     </fieldset>
   );
 }
