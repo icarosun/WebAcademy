@@ -4,6 +4,14 @@ import { registrarCompra } from "./compra.service";
 import { itemCarrinhoDto } from "./compra.types";
 
 function addItemCarrinho(req: Request, res: Response) {
+  /*
+    #swagger.summary = "Adiciona um item no carrinho"
+    #swagger.parameters['body'] = {
+     in: 'body',
+     schema: { $ref: '#/definitions/itemCarrinhoDto'}
+    }
+     */
+
   const item = {} as itemCarrinhoDto;
 
   if (!req.session.carrinhoCompras) req.session.carrinhoCompras = [];
@@ -18,6 +26,10 @@ function addItemCarrinho(req: Request, res: Response) {
 }
 
 async function finalizarCompra(req: Request, res: Response) {
+  /*
+    #swagger.summary = "Finalizar a compra de um carrinho."
+      */
+
   if (!req.session.uid) return res.status(400).json({message: "Usuário não logado"})
   if (!req.session.carrinhoCompras) return res.status(400).json({message: "Carrinho de compra vazio"})
  

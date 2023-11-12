@@ -13,18 +13,17 @@
   "paths": {
     "/v1/auth/": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Cadastra um novo usuário",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/SignUpDto"
             }
           }
         ],
@@ -41,7 +40,20 @@
         }
       },
       "put": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Realiza o login do usuário.",
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/LoginDto"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -55,6 +67,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Realiza o logout do usuário logado",
         "description": "",
         "responses": {
           "200": {
@@ -68,6 +84,10 @@
     },
     "/v1/usuario/": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Recupera os usuários cadastrados por rotulo ou todos usuários",
         "description": "",
         "parameters": [
           {
@@ -86,18 +106,17 @@
         }
       },
       "post": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Cadastra um novo usuário",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateUsuarioDto"
             }
           }
         ],
@@ -116,13 +135,18 @@
     },
     "/v1/usuario/{id}": {
       "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Retorna um usuário específico ",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do usuário específico"
           }
         ],
         "responses": {
@@ -138,24 +162,24 @@
         }
       },
       "put": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Atualiza um usuário específico ",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do usuário específico"
           },
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UpdateUsuarioDto"
             }
           }
         ],
@@ -172,13 +196,18 @@
         }
       },
       "delete": {
+        "tags": [
+          "Usuario"
+        ],
+        "summary": "Deleta um usuário específico ",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do usuário específico"
           }
         ],
         "responses": {
@@ -196,6 +225,10 @@
     },
     "/v1/produto/": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
+        "summary": "Recupera os produtos cadastrados",
         "description": "",
         "responses": {
           "200": {
@@ -207,24 +240,26 @@
         }
       },
       "post": {
+        "tags": [
+          "Produto"
+        ],
+        "summary": "Adicionar um novo produto na base.",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "nome": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateProdutoDto"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Produto"
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -237,18 +272,26 @@
     },
     "/v1/produto/{id}": {
       "get": {
+        "tags": [
+          "Produto"
+        ],
+        "summary": "Retorna um produto específico.",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do produto"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Produto"
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -259,13 +302,25 @@
         }
       },
       "put": {
+        "tags": [
+          "Produto"
+        ],
+        "summary": "Atualiza um produto específico ",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do produto específico"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateProdutoDto"
+            }
           }
         ],
         "responses": {
@@ -281,13 +336,18 @@
         }
       },
       "delete": {
+        "tags": [
+          "Produto"
+        ],
+        "summary": "Deleta um produto específico ",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Id do produto específico"
           }
         ],
         "responses": {
@@ -305,10 +365,14 @@
     },
     "/v1/linguagem/change": {
       "post": {
+        "tags": [
+          "Linguagem"
+        ],
+        "summary": "Insere uma língua no cookies",
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "lang",
             "in": "body",
             "schema": {
               "type": "object",
@@ -317,7 +381,9 @@
                   "example": "any"
                 }
               }
-            }
+            },
+            "example": "pt-BR ou en-US",
+            "description": "Valor da língua, isso ficará salvo no cookie"
           }
         ],
         "responses": {
@@ -329,21 +395,17 @@
     },
     "/v1/compra/": {
       "post": {
+        "tags": [
+          "Compra"
+        ],
+        "summary": "Adiciona um item no carrinho",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "example": "any"
-                },
-                "quantidade": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/itemCarrinhoDto"
             }
           }
         ],
@@ -356,6 +418,10 @@
     },
     "/v1/compra/carrinho": {
       "post": {
+        "tags": [
+          "Compra"
+        ],
+        "summary": "Finalizar a compra de um carrinho.",
         "description": "",
         "responses": {
           "201": {
@@ -367,6 +433,203 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateUsuarioDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Jay Wiza"
+        },
+        "email": {
+          "type": "string",
+          "example": "Carissa_Reichert19@yahoo.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "123456"
+        },
+        "tipoUsuarioId": {
+          "type": "string",
+          "example": "380c7fd1-f5f8-490a-8fc4-d4e415c78d96"
+        }
+      }
+    },
+    "UpdateUsuarioDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Jay Wiza"
+        },
+        "email": {
+          "type": "string",
+          "example": "Carissa_Reichert19@yahoo.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "123456"
+        },
+        "tipoUsuarioId": {
+          "type": "string",
+          "example": "380c7fd1-f5f8-490a-8fc4-d4e415c78d96"
+        }
+      }
+    },
+    "CreateProdutoDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Keyboard"
+        },
+        "preco": {
+          "type": "number",
+          "example": 602
+        },
+        "estoque": {
+          "type": "number",
+          "example": 8
+        }
+      },
+      "required": [
+        "nome",
+        "preco",
+        "estoque"
+      ]
+    },
+    "UpdateProdutoDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Keyboard"
+        },
+        "preco": {
+          "type": "number",
+          "example": 602
+        },
+        "estoque": {
+          "type": "number",
+          "example": 8
+        }
+      },
+      "required": [
+        "nome",
+        "preco",
+        "estoque"
+      ]
+    },
+    "Produto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "5fa42220-21fd-42ff-8e18-f2cac7f77c15"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Keyboard"
+        },
+        "preco": {
+          "type": "number",
+          "example": 602
+        },
+        "estoque": {
+          "type": "number",
+          "example": 8
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2023-11-12T10:44:02.517Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2023-11-12T10:44:02.517Z"
+        }
+      }
+    },
+    "LoginDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "Lauriane.Vandervort@yahoo.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "1234567"
+        }
+      },
+      "required": [
+        "email",
+        "senha"
+      ]
+    },
+    "SignUpDto": {
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "example": "Randolph Roberts"
+        },
+        "email": {
+          "type": "string",
+          "example": "Maximo.Hartmann@gmail.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "Usuario": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "eab9b3bf-c483-4fe4-9347-a1397a8cce7c"
+        },
+        "nome": {
+          "type": "string",
+          "example": "Randolph Roberts"
+        },
+        "email": {
+          "type": "string",
+          "example": "Maximo.Hartmann@gmail.com"
+        },
+        "senha": {
+          "type": "string",
+          "example": "$2a$10$RztpuFb2XIkgeQuzjtk6..CZ9aT4UVYiz7Htp.iMmpuHDGZgNqZzy"
+        },
+        "tipoUsuarioId": {
+          "type": "string",
+          "example": "380c7fd1-f5f8-490a-8fc4-d4e415c78d96"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2023-11-12T16:10:33.264Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2023-11-12T16:10:33.264Z"
+        }
+      }
+    },
+    "itemCarrinhoDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "ec757cea-783f-48ea-b6fa-5928e74067e6"
+        },
+        "quantidade": {
+          "type": "number",
+          "example": 1
         }
       }
     }
