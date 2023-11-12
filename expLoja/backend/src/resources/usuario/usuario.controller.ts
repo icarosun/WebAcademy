@@ -5,6 +5,15 @@ import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
 import { TiposUsuarios } from "../tipoUsuario/tipoUsuario.constants";
 
 async function index (req: Request, res: Response) {
+/*
+    #swagger.summary = "Recupera os usuários cadastrados por rotulo ou todos usuários"
+    #swagger.query['rotulo'] = {
+      example: "2272583b-f5a5-4238-b68f-44061fe0016b ou 380c7fd1-f5f8-490a-8fc4-d4e415c78d96", 
+      description: "O rotulo pode ser o Id do admin ou cliente",
+     in: 'body',
+    }
+      */
+
   try {
     const rotulo = req.query.rotulo as TiposUsuarios;
     const usuarios = await getAllUsuarios(rotulo);
@@ -16,6 +25,17 @@ async function index (req: Request, res: Response) {
 }
 
 async function create(req: Request, res: Response) {
+/*
+    #swagger.summary = "Cadastra um novo usuário"
+    #swagger.parameters['body'] = {
+     in: 'body',
+     schema: { $ref: '#/definitions/CreateUsuarioDto'}
+    }
+    #swagger.response[201] = {
+      schema: { $ref: '#/definitions/Usuario'}
+    }
+  */
+
   try {
     const newUsuario = req.body as CreateUsuarioDto;
 
@@ -30,6 +50,15 @@ async function create(req: Request, res: Response) {
 }
 
 async function read (req: Request, res: Response) {
+ /*
+    #swagger.summary = "Retorna um usuário específico "
+    #swagger.parameters['id'] = { description: "Id do usuário específico" }
+    #swagger.response[200] = {
+      schema: { $ref: '#/definitions/Usuario'}
+    }
+  */
+
+ 
   try {
     const { id } = req.params;
 
@@ -44,6 +73,15 @@ async function read (req: Request, res: Response) {
 } 
 
 async function update(req: Request, res: Response) {
+/*
+    #swagger.summary = "Atualiza um usuário específico "
+    #swagger.parameters['id'] = { description: "Id do usuário específico" }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      schema: { $ref: '#definitions/UpdateUsuarioDto'} 
+    }
+    */
+
   try {
     const idUsuario = req.params.id;
     const usuario = req.body as UpdateUsuarioDto;
@@ -70,6 +108,11 @@ async function update(req: Request, res: Response) {
 }
 
 async function remove(req: Request, res: Response) {
+  /*
+    #swagger.summary = "Deleta um usuário específico "
+    #swagger.parameters['id'] = { description: "Id do usuário específico" }
+     */
+
   try {
     const { id } = req.params;
 
