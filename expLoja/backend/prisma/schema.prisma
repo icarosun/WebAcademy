@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]
+}
+
+model Produto {
+  id            String          @id @default(uuid()) @db.Char(40)
+  nome          String          @unique @db.VarChar(100)
+  preco         Float           @db.Float
+  estoque       Int             @db.Int
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  CompraProduto CompraProduto[]
+
+  @@map("produtos")
+}
+
+model Usuario {
+  id            String      @id @default(uuid()) @db.Char(40)
+  nome          String      @db.VarChar(100)
+  email         String      @unique @db.VarChar(100)
+  senha         String      @db.Char(100)
+  TipoUsuario   TipoUsuario @relation(fields: [tipoUsuarioId], references: [id])
+  tipoUsuarioId String      @db.Char(40)
+  Compra        Compra[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+model TipoUsuario {
+  id        String   @id @default(uuid()) @db.Char(40)
+  rotulo    String   @unique @db.VarChar(10)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  usuario Usuario[]
+
+  @@map("tipos_usuarios")
+}
+
+model Compra {
+  id            String          @id @default(uuid()) @db.Char(40)
+  usuario       Usuario         @relation(fields: [usuarioId], references: [id])
+  usuarioId     String          @db.Char(40)
+  CompraProduto CompraProduto[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("compras")
+}
+
+model CompraProduto {
+  id         String  @id @default(uuid()) @db.Char(40)
+  compra     Compra  @relation(fields: [compraId], references: [id])
+  compraId   String  @db.Char(40)
+  produto    Produto @relation(fields: [produtoId], references: [id])
+  produtoId  String  @db.Char(40)
+  quantidade Int     @db.Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("compras_produtos")
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
