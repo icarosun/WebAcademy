@@ -5,6 +5,17 @@ import { buscaUsuarioPorEmail } from "../usuario/usuario.service";
 import { autenticate, createUsuario } from "./auth.service";
 
 async function signup(req: Request, res: Response) {
+  /*
+    #swagger.summary = "Cadastra um novo usuário"
+    #swagger.parameters['body'] = {
+     in: 'body',
+     schema: { $ref: '#/definitions/SignUpDto'}
+    }
+    #swagger.response[201] = {
+      schema: { $ref: '#/definitions/Usuario'}
+    }
+  */
+
   const usuario = req.body as SignUpDto;
   try {
     if (await buscaUsuarioPorEmail(usuario.email)) return res.status(409).json({message: "Email informado já está sendo usado"});
@@ -18,6 +29,14 @@ async function signup(req: Request, res: Response) {
 } 
 
 async function login(req: Request, res: Response) {
+    /*
+    #swagger.summary = "Realiza o login do usuário."
+    #swagger.parameters['body'] = {
+     in: 'body',
+     schema: { $ref: '#/definitions/LoginDto'}
+    }
+        */
+
   try {
     const usuario = await autenticate(req.body);
 
@@ -33,6 +52,13 @@ async function login(req: Request, res: Response) {
 }
 
 async function logout(req: Request, res: Response) {
+  /*
+    #swagger.summary = "Realiza o logout do usuário logado"
+    #swagger.response["200"] = {
+      description: "Usuário logado foi deslogado"
+    }
+  */
+
   req.session.destroy((error) => {
     if (error) return res.status(500).json({ message: "Error ao efetuar logout"});
 
