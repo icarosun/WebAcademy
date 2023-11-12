@@ -10,6 +10,10 @@ import {
 import { CreateProdutoDto } from "./produto.types";
 
 const index = async (req: Request, res: Response) => {
+  /*
+    #swagger.summary = "Recupera os produtos cadastrados"
+  */
+
   try {
     const produtos = await getAllProdutos();
     res.status(200).json(produtos);
@@ -19,6 +23,16 @@ const index = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
+  /*
+    #swagger.summary = "Adicionar um novo produto na base."
+    #swagger.parameters['body'] = {
+     in: 'body',
+     schema: { $ref: '#/definitions/CreateProdutoDto'}
+    }
+     #swagger.responses[201] = {
+       schema: { $ref: '#/definitions/Produto'}
+     }
+    */
   const produto = req.body as CreateProdutoDto;
   try {
     if (await buscaProdutoPorNome(produto.nome))
@@ -31,6 +45,14 @@ const create = async (req: Request, res: Response) => {
 };
 
 const read = async (req: Request, res: Response) => {
+  /*
+    #swagger.summary = "Retorna um produto específico."
+    #swagger.parameters['id'] = { description: "Id do produto" }
+    #swagger.responses[200] = {
+       schema: { $ref: '#/definitions/Produto'}
+     }
+    */
+
   const { id } = req.params;
   try {
     const prod = await getProduto(id);
@@ -42,6 +64,15 @@ const read = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
+ /*
+    #swagger.summary = "Atualiza um produto específico "
+    #swagger.parameters['id'] = { description: "Id do produto específico" }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      schema: { $ref: '#definitions/UpdateProdutoDto'} 
+    }
+    */
+ 
   const { id } = req.params;
   const produto = req.body;
   try {
@@ -55,6 +86,11 @@ const update = async (req: Request, res: Response) => {
 };
 
 const remove = async (req: Request, res: Response) => {
+  /*
+    #swagger.summary = "Deleta um produto específico "
+    #swagger.parameters['id'] = { description: "Id do produto específico" }
+     */
+
   const { id } = req.params;
   try {
     const prod = await getProduto(id);
