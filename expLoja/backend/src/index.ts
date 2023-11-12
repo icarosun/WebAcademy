@@ -9,10 +9,13 @@ import validateEnv from "./utils/validateEnv";
 import router from "./router";
 import setLangCookie from "./middleware/setLangCookie";
 
+import { itemCarrinhoDto } from "./resources/compra/compra.types";
+
 declare module "express-session" {
   interface SessionData {
     uid: string;
     tipoUsuario: string
+    carrinhoCompras: itemCarrinhoDto[]
   }
 }
 

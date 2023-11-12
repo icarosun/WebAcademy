@@ -2,7 +2,7 @@ import Joi from "joi";
 
 export const loginSchema = Joi.object().keys({
   email: Joi.string().email().required(),
-  //senha: Joi.string().min(6).required(), 
+  senha: Joi.string().required(), 
 });
 
 export const signSchema = Joi.object().keys({
