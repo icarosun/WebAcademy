@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import { v4 as uuidv4 } from "uuid";
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger-doc.json";
 
 import validateEnv from "./utils/validateEnv";
 import router from "./router";
@@ -39,6 +41,7 @@ app.use(
 );
 app.use(setLangCookie);
 app.use(router);
+app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
