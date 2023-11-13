@@ -29,7 +29,7 @@ export default function ListaToDo() {
   }
 
   const columnsToDos: TableColumn<ITask>[] = [
-    {head: "Atividade" , acessor: "task"},
+    {head: "Task" , acessor: "task"},
     {head: "Delete", isActionButton: true, onActionClick: (obj) => {
       DeleteTask(obj);
     }
