@@ -1,8 +1,11 @@
 import { ReactNode } from "react";
+import { Button } from "react-bootstrap";
 
 export interface TableColumn<T> {
   acessor?: keyof T;
   head: string; 
+  isActionButton?: boolean;
+  onActionClick?: (obj: T) => void;
 }
 
 interface TableProps<T> {
@@ -12,15 +15,14 @@ interface TableProps<T> {
 
 export default function CustomTable<T>(props: TableProps<T>) {
   return (
-    <table className = "table tabl-bordered table-striped">
+    <table className = "table tabl-bordered ">
       <thead>
-        <thead>
-          <tr>
-            {props.columns.map((column, index) => {
-              return <th key = {index}>{column.head}</th>;
-            })}
-          </tr>
-        </thead> 
+        <tr>
+          {props.columns.map((column, index) => {
+            return <th key = {index}>{column.head}</th>;
+          })}
+        </tr>
+      </thead> 
         <tbody>
           {props.data.map((item, index) => {
             return (
@@ -28,7 +30,14 @@ export default function CustomTable<T>(props: TableProps<T>) {
                 {props.columns.map((column, index) => {
                   return (
                     <td key = {index}>
-                      {item[column.acessor!] as ReactNode}
+                      {column.isActionButton ?  (
+                        <Button variant = {column.head == "Do" ? "success" : "warning"} onClick = {() => column.onActionClick?.(item)}>
+                          {column.head}
+                        </Button>
+                    ) 
+                      :                        
+                        item[column.acessor!] as ReactNode  
+                    }
                     </td> 
                   );
                 })}
@@ -36,7 +45,6 @@ export default function CustomTable<T>(props: TableProps<T>) {
             );
           })} 
         </tbody>
-      </thead>
     </table>
 
   );
