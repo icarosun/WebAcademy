@@ -30,4 +30,12 @@ export async function GetPopularMovies(): Promise<TheMovieDB> {
   return result.data;
 }
 
+export async function GetMoreRateMovies(): Promise<TheMovieDB> {
+  const result = await instance.http.get(
+    `/movie/top_rated?language=en-US&page=1&api_key=${apiKey}`
+  );
+
+  return result.data;
+}
+
 // IMPLEMENTE AS DEMAIS FUNÇÕES PARA PEGAR AS DEMAIS CATEGORIAS DE FILMES
