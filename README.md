@@ -10,6 +10,7 @@ O Web Academy é um projeto realizado pela Universidade Federal do Amazonas (UFA
 - [WACAD009 - Express](express)
 - [WACAD010 - Fundamentos de Banco de Dados](./banco_dados/)
 - [WACAD011 - Cookies, Sessões e Autenticação (API)](./ExpAPI)
+- [WACAD012 - Contêineres](https://github.com/icarosun/WebAcademy-Livros)
 
 ### Typescript
 
