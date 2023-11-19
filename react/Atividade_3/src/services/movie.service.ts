@@ -25,14 +25,14 @@ const apiKey = import.meta.env.VITE_API_KEY;
 
 export async function GetPopularMovies(): Promise<TheMovieDB> {
   const result = await instance.http.get(
-    `/movie/popular?language=pt-BR&page=1&api_key=${apiKey}`
+    `/movie/popular?language=pt-BR&page=1&api_key=${apiKey}`,
   );
   return result.data;
 }
 
 export async function GetMoreRateMovies(): Promise<TheMovieDB> {
   const result = await instance.http.get(
-    `/movie/top_rated?language=en-US&page=1&api_key=${apiKey}`
+    `/movie/top_rated?language=en-US&page=1&api_key=${apiKey}`,
   );
 
   return result.data;
@@ -40,7 +40,31 @@ export async function GetMoreRateMovies(): Promise<TheMovieDB> {
 
 export async function GetComedyMovies(): Promise<TheMovieDB> {
   const result = await instance.http.get(
-    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=35&api_key=${apiKey}`
+    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=35&api_key=${apiKey}`,
+  );
+
+  return result.data;
+}
+
+export async function GetActionMovies(): Promise<TheMovieDB> {
+  const result = await instance.http.get(
+    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=28&api_key=${apiKey}`,
+  );
+
+  return result.data;
+}
+
+export async function GetAdventureMovies(): Promise<TheMovieDB> {
+  const result = await instance.http.get(
+    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=12&api_key=${apiKey}`,
+  );
+
+  return result.data;
+}
+
+export async function GetRomanceMovies(): Promise<TheMovieDB> {
+  const result = await instance.http.get(
+    `/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=10749&api_key=${apiKey}`,
   );
 
   return result.data;

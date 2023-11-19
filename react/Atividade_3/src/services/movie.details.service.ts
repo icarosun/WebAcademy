@@ -30,7 +30,7 @@ const apiKey = import.meta.env.VITE_API_KEY;
 
 export async function GetMovieDetails(idMovie: number): Promise<MovieDetails> {
   const result = await instance.http.get(
-    `/movie/${idMovie}?language=pt-BR&api_key=${apiKey}`
+    `/movie/${idMovie}?language=pt-BR&api_key=${apiKey}`,
   );
   return result.data;
 }
