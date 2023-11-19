@@ -1,5 +1,11 @@
-import { Row, Col } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import Slider from "react-slick";
+
 import { Movie, TheMovieDB } from "../../services/movie.service";
+import "../../slick.css"; 
+import "../../slick-theme.css"
+
+
 
 interface ListCategoryMovieProps {
   category: string;
@@ -8,25 +14,32 @@ interface ListCategoryMovieProps {
 }
 
 export default function ListCategoryMovie(props: ListCategoryMovieProps) {
-  return (
-    <div className="bg-body-tertiary rounded-3">
-      <h2 style={{ textAlign: "left" }}>{props.category}</h2>
+  const settings = {
+    centerMode: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+  }
 
-      <Row>
+  return (
+    <>
+      <h2 style={{ textAlign: "left" }}>{props.category}</h2>
+      
+      <Slider {...settings}> 
         {props.movies?.results.map((movie) => {
           return (
-            <Col key={movie.id} onClick={() => props.onMoreInfoMovie(movie)}>
-              <img
-                style={{ width: 200, borderRadius: 7 }}
+            <Card className = "justify-content-center" key={movie.id} onClick={() => props.onMoreInfoMovie(movie)}>
+              <Card.Img variant = "top"
                 src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${
                   movie.poster_path
                 }`}
               />
               <h5>{movie.original_title}</h5>
-            </Col>
+            </Card>
           );
         })}
-      </Row>
-    </div>
+      </Slider>
+    </>
   );
 }

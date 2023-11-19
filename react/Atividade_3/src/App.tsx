@@ -63,7 +63,7 @@ function App() {
 
     fetchData();
   }, []);
-
+  
   async function MovieDetails(idMovie: number) {
     const movieDetail = await GetMovieDetails(idMovie);
     SetMovieDetail(movieDetail);
@@ -71,8 +71,9 @@ function App() {
   }
 
   return (
-    <Container fluid>
+    <Container>
       <h1>Filmes</h1>
+      <hr/> 
 
       <ListCategoryMovie
         category="Filmes populares"
@@ -82,7 +83,7 @@ function App() {
         }}
       />
 
-      <ListCategoryMovie
+       <ListCategoryMovie
         category="Filmes mais curtidos"
         movies={moreRateMovies}
         onMoreInfoMovie={(obj) => {
@@ -91,13 +92,13 @@ function App() {
       />
 
       <ListCategoryMovie
-        category="Filmes de comédia"
+        category="Filmes de Comédia"
         movies={comedyMovies}
         onMoreInfoMovie={(obj) => {
           MovieDetails(obj.id);
         }}
       />
-
+     
       <ListCategoryMovie
         category="Filmes de Ação"
         movies={actionMovies}
@@ -105,7 +106,7 @@ function App() {
           MovieDetails(obj.id);
         }}
       />
-
+      
       <ListCategoryMovie
         category="Filmes de Aventura"
         movies={adventureMovies}
@@ -122,13 +123,10 @@ function App() {
         }}
       />
 
-      <ModalInfoMovie
-        isShow={isShowModal}
-        onClose={handleClose}
-        movieDetails={movieDetail}
-      />
-    </Container>
-  );
+
+      <ModalInfoMovie isShow={isShowModal} onClose={handleClose} movieDetails={movieDetail} />
+    </Container> 
+  );    
 }
 
 export default App;
