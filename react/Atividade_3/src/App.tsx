@@ -12,6 +12,7 @@ import {
   GetActionMovies,
   GetAdventureMovies,
   GetRomanceMovies,
+  Movie,
 } from "./services/movie.service";
 
 import {
@@ -34,6 +35,10 @@ function App() {
   const [movieDetail, SetMovieDetail] = useState<MovieDetails>();
 
   const handleClose = () => SetIsShowModal(false);
+
+  const handleMovieDetails = (obj: Movie) => {
+    MovieDetails(obj.id);
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -78,9 +83,7 @@ function App() {
       <ListCategoryMovie
         category="Filmes populares"
         movies={popularMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
+        onMoreInfoMovie={handleMovieDetails}
       />
 
        <ListCategoryMovie
