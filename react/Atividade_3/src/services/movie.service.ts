@@ -70,4 +70,11 @@ export async function GetRomanceMovies(): Promise<TheMovieDB> {
   return result.data;
 }
 
+export async function GetRecommendationsMovies(idMovie: number): Promise<TheMovieDB> {
+  const result = await instance.http.get(
+    `/movie/${idMovie}/recommendations?language=en-US&page=1&api_key=${apiKey}`
+  );
+
+  return result.data;
+}
 // IMPLEMENTE AS DEMAIS FUNÇÕES PARA PEGAR AS DEMAIS CATEGORIAS DE FILMES
