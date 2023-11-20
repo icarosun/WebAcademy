@@ -57,7 +57,7 @@ function App() {
                   <input className = "form-check-input me-1" type = "checkbox" id={task.id} onClick={() => dispatch(finishedTask(task))}/>
                   <label className = "form-check-label" htmlFor = {task.id} >{task.title}</label>
                 </div>
-                <Button onClick= {() => dispatch(removeTask(task))}>Delete</Button>
+                <Button className="btn btn-light text-danger" onClick= {() => dispatch(removeTask(task))}>x</Button>
               </>
             )}
           </li>
