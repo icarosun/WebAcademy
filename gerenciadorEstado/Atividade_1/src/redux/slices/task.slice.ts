@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface Task {
+export interface Task {
   id: string;
-  task: string;
+  title: string;
   finished: boolean;
-  dateFinished?: Date;
+  dateFinished?: string;
 }
 
 interface TaskState {
@@ -12,26 +12,34 @@ interface TaskState {
 }
 
 const initialState: TaskState = {
-  tasks: [{id: "1", task: "do", finished: false}],
+  tasks: []
 }
 
 const taskSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
-    newTask: (state, action: PayloadAction<Task>) => {
+    addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.push(action.payload);
     },
     removeTask: (state, action: PayloadAction<Task>) => {
-      state.tasks.filter((task) => task.id != action.payload.id);
+      state.tasks = state.tasks.filter((task) => task.id != action.payload.id);
     },
     finishedTask: (state, action: PayloadAction<Task>) => {
-      state.tasks.map((task) => {
-        return task.id === action.payload.id ? action.payload : task;
+      const updateTask: Task = {
+        id: action.payload.id,
+        title: action.payload.title,
+        finished: true,
+        dateFinished: new Date().toString()
+      } 
+
+      state.tasks = state.tasks.map((task) => {
+        return task.id === action.payload.id ? updateTask : task;
       })
+
     }
   }
 });
 
-export const { newTask, removeTask, finishedTask } = taskSlice.actions;
+export const { addTask, removeTask, finishedTask } = taskSlice.actions;
 export default taskSlice.reducer;
