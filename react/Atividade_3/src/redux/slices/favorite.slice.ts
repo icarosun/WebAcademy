@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Favorite {
   idMovie: number;
+  titleMovie: string;
 }
 
 interface FavoriteState {

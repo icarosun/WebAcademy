@@ -1,7 +1,6 @@
-import { Row, Col, Modal, Button, Card, Stack, Badge, Alert, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Row, Col, Modal, Card, Stack, Badge, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faCircle } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { MovieDetails } from "../../services/movie.details.service";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,42 +42,30 @@ function handleValueId(id: number | undefined): number {
   return id !== undefined ? id : 0; 
 }
 
-interface AddIconSaveOrRemoveFavoriteMovieProps {
-  savedMovie: boolean;
-  onAddMovie?: () => void;
-  onRemoveMovie?: () => void;
-}
-
 export default function ModalInfoMovie(props: ModalInfoMovieProps) {
   const isMoviePresentInTheFavoriteList = useSelector(isMovieInTheFavoriteList(handleValueId(props.movieDetails?.id)));
   const dispatch = useDispatch();
 
-  const handleAddListFavorite = (id: number) => {
-    const movieFavorite: Favorite = {
-      idMovie: id,
-    }
-    console.log("Add", movieFavorite);
-    dispatch(addFavoriteMovie(movieFavorite));
+  const favoriteMovie: Favorite = {
+    idMovie: handleValueId(props.movieDetails?.id), 
+    titleMovie: props.movieDetails?.title ?? "",
   }
 
-  const handleRemoveMovieListFavorite = (id: number) => {
-    const movieToRemove: Favorite = {
-      idMovie: id,
-    }
-    console.log("Remove", movieToRemove);
+  const handleAddListFavorite = (favoriteMovie: Favorite) => {
+    dispatch(addFavoriteMovie(favoriteMovie));
+  }
+
+  const handleRemoveMovieListFavorite = (movieToRemove: Favorite) => {
     dispatch(removeFavoriteMovie(movieToRemove));
   }
 
-  const AddIconSaveOrRemoveFavoriteMovie = (props: AddIconSaveOrRemoveFavoriteMovieProps) => (
-    <FontAwesomeIcon title = {props.savedMovie ? "Remover dos favoritos" : "Salvar nos favoritos"} onClick={props.onClick} className = "m-3 p-2" icon= {props.savedMovie ? (faBookmark) : (faBookmarkRegular)} size = "lg"/>
-  );
-    
   return (
     <Modal show={props.isShow} onHide={props.onClose} size="xl" centered>
       <Modal.Header closeButton>
         <Modal.Title>{props.movieDetails?.title} </Modal.Title>
-        <CustomIconSaveOrRemoveMovie savedMovie = {isMoviePresentInTheFavoriteList} 
-          idMovie = {props.movieDetails?.id ?? 0} 
+        <CustomIconSaveOrRemoveMovie 
+          favoriteMovie={favoriteMovie}
+          savedMovie = {isMoviePresentInTheFavoriteList} 
           onSavedMovie={handleAddListFavorite}
           onRemoveMovie={handleRemoveMovieListFavorite}
         />

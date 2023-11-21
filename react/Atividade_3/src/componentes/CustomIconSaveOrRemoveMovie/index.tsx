@@ -1,26 +1,27 @@
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as faBookmarkRegular } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Favorite } from "../../redux/slices/favorite.slice";
 
 interface CustomIconSaveOrRemoveMovieProps {
   savedMovie: boolean;
-  idMovie: number;
-  onSavedMovie?: (id: number) => void;
-  onRemoveMovie?: (id: number) => void;
+  favoriteMovie: Favorite;
+  onSavedMovie?: (movieFavorite: Favorite) => void;
+  onRemoveMovie?: (movieFavorite: Favorite) => void;
 }
 
 export default function CustomIconSaveOrRemoveMovie(props: CustomIconSaveOrRemoveMovieProps) {
   function changeListFavorite() {
     if (props.savedMovie) {
-      props.onRemoveMovie!(props.idMovie);
+      props.onRemoveMovie!(props.favoriteMovie);
     } else {
-      props.onSavedMovie!(props.idMovie);
+      props.onSavedMovie!(props.favoriteMovie);
     }
   }
 
   return (
     <FontAwesomeIcon 
-      title = {props.savedMovie ? "Remover dos favoritos" : "Salvar nos favoritos"} 
+      title = {props.savedMovie ? "Remover dos favoritos" : "Adicionar aos favoritos"} 
       onClick={() => changeListFavorite()} 
       className = "m-3 p-2" 
       icon= {props.savedMovie ? (faBookmark) : (faBookmarkRegular)} 
