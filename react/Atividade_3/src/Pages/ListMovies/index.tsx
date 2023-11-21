@@ -75,8 +75,6 @@ export default function ListMovies() {
 
   return (
     <Container>
-      <h1>Filmes</h1>
-      <hr/> 
 
       <ListCategoryMovie
         category="Filmes populares"
