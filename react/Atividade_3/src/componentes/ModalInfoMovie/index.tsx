@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { MovieDetails } from "../../services/movie.details.service";
+import { useDispatch, useSelector } from "react-redux";
+import { Favorite, addFavoriteMovie, isMovieInTheFavoriteList, removeFavoriteMovie } from "../../redux/slices/favorite.slice";
+import CustomIconSaveOrRemoveMovie from "../CustomIconSaveOrRemoveMovie";
 
 interface ModalInfoMovieProps {
   isShow: boolean;
@@ -35,11 +38,37 @@ function changeStringToFormatInBrasil(date: string | undefined): string {
   return "0/0/0000";
 }
 
+function handleValueId(id: number | undefined): number {
+  return id !== undefined ? id : 0; 
+}
+
 export default function ModalInfoMovie(props: ModalInfoMovieProps) {
+  const isMoviePresentInTheFavoriteList = useSelector(isMovieInTheFavoriteList(handleValueId(props.movieDetails?.id)));
+  const dispatch = useDispatch();
+
+  const favoriteMovie: Favorite = {
+    idMovie: handleValueId(props.movieDetails?.id), 
+    titleMovie: props.movieDetails?.title ?? "",
+  }
+
+  const handleAddListFavorite = (favoriteMovie: Favorite) => {
+    dispatch(addFavoriteMovie(favoriteMovie));
+  }
+
+  const handleRemoveMovieListFavorite = (movieToRemove: Favorite) => {
+    dispatch(removeFavoriteMovie(movieToRemove));
+  }
+
   return (
     <Modal show={props.isShow} onHide={props.onClose} size="xl" centered>
       <Modal.Header closeButton>
         <Modal.Title>{props.movieDetails?.title} </Modal.Title>
+        <CustomIconSaveOrRemoveMovie 
+          favoriteMovie={favoriteMovie}
+          savedMovie = {isMoviePresentInTheFavoriteList} 
+          onSavedMovie={handleAddListFavorite}
+          onRemoveMovie={handleRemoveMovieListFavorite}
+        />
       </Modal.Header>
       <Modal.Body>
         <Row>
@@ -97,7 +126,7 @@ export default function ModalInfoMovie(props: ModalInfoMovieProps) {
             </Row>
             <Stack direction="horizontal" gap={3} className="my-3">
               {props.movieDetails?.genres.map((genre) => {
-                return <Badge bg="dark">{genre.name}</Badge>;
+                return <Badge key={genre.id} bg="dark">{genre.name}</Badge>;
               })}
             </Stack>
             <p className="fst-italic">{props.movieDetails?.tagline}</p>
