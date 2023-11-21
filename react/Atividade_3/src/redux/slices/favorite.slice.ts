@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface Favorite {
+export interface Favorite {
   idMovie: number;
 }
 
@@ -9,7 +9,7 @@ interface FavoriteState {
 }
 
 const initialState: FavoriteState = {
-  favoriteMovies: []
+  favoriteMovies: [],
 }
 
 const favoriteMovieSlice = createSlice({
@@ -22,11 +22,13 @@ const favoriteMovieSlice = createSlice({
     removeFavoriteMovie: (state, action: PayloadAction<Favorite>) => {
       state.favoriteMovies = state.favoriteMovies.filter((favoriteMovie) => favoriteMovie.idMovie != action.payload.idMovie)
     },
-    isInTheFavoriteMovie: (state, action: PayloadAction<number>) => {
-      !!state.favoriteMovies.find((favoriteMovie) => favoriteMovie.idMovie === action.payload);
-    }
   }
 });
 
 export const { addFavoriteMovie, removeFavoriteMovie } = favoriteMovieSlice.actions;
+
+export const isMovieInTheFavoriteList = (id: number) => (state: any) => {
+   return !!state.favorite.favoriteMovies.find((favoriteMovie: any) => favoriteMovie.idMovie === id);
+}
+
 export default favoriteMovieSlice.reducer;
