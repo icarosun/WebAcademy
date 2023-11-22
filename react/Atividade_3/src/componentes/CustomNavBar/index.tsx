@@ -2,13 +2,15 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 
 export default function CustomNavBar() {
   return (
-    <Navbar>
+    <Navbar bg="dark" data-bs-theme="dark">
       <Container>
         <Navbar.Brand href = "/">
-          Home
+          NetFilm da WebAcademy
         </Navbar.Brand>
-        <Nav className = "me-auto">
-          <Nav.Link href = "/recommendations">Recomendações</Nav.Link>
+        <Nav 
+          className = "me-auto"
+        >
+          <Nav.Link href = "/recommendations" eventKey={"/recommendations"}>Recomendações</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
