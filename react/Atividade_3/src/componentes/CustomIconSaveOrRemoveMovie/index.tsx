@@ -26,7 +26,7 @@ export default function CustomIconSaveOrRemoveMovie(props: CustomIconSaveOrRemov
       className = "m-3 p-2" 
       icon= {props.savedMovie ? (faBookmark) : (faBookmarkRegular)} 
       size = "lg"
-      style={props.savedMovie ? {color: "#f8e45c"} : {}} 
+      style={props.savedMovie ? {color: "#f8e45c", cursor: "pointer"} : {cursor: "pointer"}} 
     />
   );
 }

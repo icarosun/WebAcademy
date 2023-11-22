@@ -53,14 +53,13 @@ export default function ListCategoryMovie(props: ListCategoryMovieProps) {
       <Slider {...settings}> 
         {props.movies?.results.map((movie) => {
           return (
-            <div className = "justify-content-center p-1" key={movie.id} onClick={() => props.onMoreInfoMovie(movie)}>
-              <Card.Img variant = "top"
-                src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${
-                  movie.poster_path
-                }`}
-                alt = {movie.original_title}
+              <img
+                className = "p-1 cursor-pointer" 
+                onClick={() => props.onMoreInfoMovie(movie)}
+                style={{ width: 200, borderRadius: 7, cursor: "pointer", padding: "1px"}}
+                src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${movie.poster_path}`}
+                alt = {movie.title}
               />
-            </div>
           );
         })}
       </Slider>

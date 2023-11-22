@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom";
 import CustomNavBar from "../../componentes/CustomNavBar";
-import { Container } from "react-bootstrap";
 
 export default function NavBarLayout() {
   return (
-    <Container fluid>
+    <div style = {{height: "100vh", width: "100vw"}}>
       <CustomNavBar/>
       <Outlet />
-    </Container>
+    </div>
   );
 }
