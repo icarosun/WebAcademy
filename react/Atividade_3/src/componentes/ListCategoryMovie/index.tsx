@@ -48,7 +48,7 @@ export default function ListCategoryMovie(props: ListCategoryMovieProps) {
 
   return (
     <>
-      <h4 className = "mt-1" style={{ textAlign: "left" }}>{props.category}</h4>
+      <h4 className = "mt-2" style={{ textAlign: "left" }}>{props.category}</h4>
       
       <Slider {...settings}> 
         {props.movies?.results.map((movie) => {
