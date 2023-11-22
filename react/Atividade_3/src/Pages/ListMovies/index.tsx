@@ -119,7 +119,6 @@ export default function ListMovies() {
         }}
       />
 
-
       <ModalInfoMovie isShow={isShowModal} onClose={handleClose} movieDetails={movieDetail} />
     </> 
   );    
