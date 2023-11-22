@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 
 export default function NavBarLayout() {
   return (
-    <Container>
+    <Container fluid>
       <CustomNavBar/>
       <Outlet />
     </Container>

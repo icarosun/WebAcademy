@@ -1,4 +1,4 @@
-import { Card } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import Slider from "react-slick";
 
 import { Movie, TheMovieDB } from "../../services/movie.service";
@@ -47,7 +47,7 @@ export default function ListCategoryMovie(props: ListCategoryMovieProps) {
   }
 
   return (
-    <>
+    <Container>
       <h4 className = "mt-2" style={{ textAlign: "left" }}>{props.category}</h4>
       
       <Slider {...settings}> 
@@ -64,6 +64,6 @@ export default function ListCategoryMovie(props: ListCategoryMovieProps) {
           );
         })}
       </Slider>
-    </>
+    </Container>
   );
 }

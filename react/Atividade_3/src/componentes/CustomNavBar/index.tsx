@@ -2,7 +2,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 
 export default function CustomNavBar() {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar expand = "xl" bg="light" data-bs-theme="light">
       <Container>
         <Navbar.Brand href = "/">
           NetFilm da WebAcademy
