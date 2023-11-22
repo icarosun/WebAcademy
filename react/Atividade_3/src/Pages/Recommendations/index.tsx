@@ -5,9 +5,11 @@ import { Container } from "react-bootstrap";
 import ListCategoryMovie from "../../componentes/ListCategoryMovie";
 import { GetMovieDetails, MovieDetails } from "../../services/movie.details.service";
 import ModalInfoMovie from "../../componentes/ModalInfoMovie";
+import { RootState } from "../../redux/store";
+import { Favorite } from "../../redux/slices/favorite.slice";
 
 export default function Recommendations() {
-  const { favoriteMovies } = useSelector((state: any) => state.favorite);
+  const { favoriteMovies } = useSelector((state: RootState) => state.favorite);
   const [recommendations, SetRecommendations] = useState<TheMovieDB[]>();
   
   const [isShowModal, SetIsShowModal] = useState<boolean>(false);
@@ -37,8 +39,8 @@ export default function Recommendations() {
   }
 
   useEffect(() => {
-    const fetchRecommendations = async (favorites) => {
-      const requests = favorites.map((movie: any) => {
+    const fetchRecommendations = async (favorites: Favorite[]) => {
+      const requests = favorites.map(async (movie: Favorite) => {
         return GetRecommendationsMovies(movie.idMovie)
           .then(movies => {
             return movies;
@@ -47,25 +49,33 @@ export default function Recommendations() {
 
       return Promise.all(requests);
     }
-
-    fetchRecommendations(favoriteMovies)
-    .then(movies => {
-      SetRecommendations(movies);
-    });
+  
+    if (favoriteMovies.length > 0) {
+      fetchRecommendations(favoriteMovies)
+      .then(movies => {
+        SetRecommendations(movies);
+      });
+    }
   }, [favoriteMovies])
   
   return (
     <Container>
-      {favoriteMovies?.map((favoriteMovie: any, index: any) => {
-        return (
-          <ListCategoryMovie 
-            key = {index}
-            category= {`Já que você adicionou ${favoriteMovie.titleMovie}, veja também: `}
-            movies = {handleVerifyReommendations(recommendations ?? [], index)}
-            onMoreInfoMovie = {handleMovieDetails}
-          />
-        );
-      })}
+      {favoriteMovies.length != 0 ? (
+        favoriteMovies?.map((favoriteMovie: Favorite, index) => {
+          return (
+            <ListCategoryMovie 
+              key = {index}
+              category= {`Já que você adicionou ${favoriteMovie.titleMovie}, veja também: `}
+              movies = {handleVerifyReommendations(recommendations ?? [], index)}
+              onMoreInfoMovie = {handleMovieDetails}
+            />
+          );
+        })
+      )
+      : (
+        <p>Adicione algum filme aos favoritos</p>
+      )
+      }
 
       <ModalInfoMovie isShow={isShowModal} onClose={handleClose} movieDetails={movieDetail} />
     </Container>
