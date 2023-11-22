@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { Container } from "react-bootstrap";
-
 import {
   GetPopularMovies,
   GetMoreRateMovies,
@@ -74,16 +72,15 @@ export default function ListMovies() {
   }
 
   return (
-    <Container>
-
+    <>
       <ListCategoryMovie
-        category="Filmes populares"
+        category="Filmes Populares"
         movies={popularMovies}
         onMoreInfoMovie={handleMovieDetails}
       />
 
        <ListCategoryMovie
-        category="Filmes mais curtidos"
+        category="Filmes mais Curtidos"
         movies={moreRateMovies}
         onMoreInfoMovie={(obj) => {
           MovieDetails(obj.id);
@@ -124,6 +121,6 @@ export default function ListMovies() {
 
 
       <ModalInfoMovie isShow={isShowModal} onClose={handleClose} movieDetails={movieDetail} />
-    </Container> 
+    </> 
   );    
 }
