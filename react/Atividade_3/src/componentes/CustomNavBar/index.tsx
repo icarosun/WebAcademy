@@ -1,16 +1,26 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 export default function CustomNavBar() {
+
   return (
-    <Navbar expand = "xl" bg="light" data-bs-theme="light">
+    <Navbar expand = "xl" bg="dark" data-bs-theme="dark">
       <Container>
-        <Navbar.Brand href = "/">
+        <NavLink className = "navbar-brand" to = "/">
           NetFilm da WebAcademy
-        </Navbar.Brand>
+        </NavLink>
         <Nav 
           className = "me-auto"
         >
-          <Nav.Link href = "/recommendations" eventKey={"/recommendations"}>Recomendações</Nav.Link>
+          <NavLink
+            className = "nav-link"
+            to = "/recommendations"
+          >Recomendações</NavLink>
+
+          <NavLink
+            className = "nav-link"
+            to = "/testa"
+          >Testa</NavLink>
         </Nav>
       </Container>
     </Navbar>
