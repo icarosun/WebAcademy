@@ -36,7 +36,6 @@ const taskSlice = createSlice({
       state.tasks = state.tasks.map((task) => {
         return task.id === action.payload.id ? updateTask : task;
       })
-
     }
   }
 });

@@ -1,11 +1,15 @@
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Button, Container, Form, InputGroup, Nav } from 'react-bootstrap';
 import { Task, addTask, finishedTask, removeTask } from '../../redux/slices/task.slice';
 import { useState } from 'react';
 import { v4 as uuidv4 } from "uuid";
 
-export default function ListToDo() {
+interface ListToDoProps {
+  isCompleted: boolean;
+}
+
+export default function ListToDo(props: ListToDoProps) {
   const listTask = useSelector((state: any) => state.task);
   const [taskName, SetTaskName] = useState<string>("");
   const dispatch = useDispatch();
@@ -28,22 +32,22 @@ export default function ListToDo() {
 
   return (
     <>
-      <h1 style = {{textAlign: "center"}}>React Todo App</h1>
-
-      <Form className = "mt-3" onSubmit={handleChange}>
-        <InputGroup className="mb-3">
-          <Form.Control
-           placeholder="Digit a task"
-           required
-           value = {taskName}
-           onChange = {(e) => {SetTaskName(e.target.value)}}
-          />
-          <Button variant="success" type = "submit"> 
-           Add
-          </Button>
-        </InputGroup>
-      </Form>
-
+      {props.isCompleted && (
+        <Form className = "mt-3" onSubmit={handleChange}>
+          <InputGroup className="mb-3">
+            <Form.Control
+             placeholder="Digit a task"
+             required
+             value = {taskName}
+             onChange = {(e) => {SetTaskName(e.target.value)}}
+            />
+            <Button variant="success" type = "submit"> 
+             Add
+            </Button>
+          </InputGroup>
+        </Form>
+      )}
+      
       <ul className='list-group'>
         {listTask.tasks.map((task: any, index: any) => (
           <li className="list-group-item d-flex justify-content-between align-items-center" key = {index}>
