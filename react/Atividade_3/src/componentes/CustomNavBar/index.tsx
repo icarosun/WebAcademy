@@ -14,13 +14,13 @@ export default function CustomNavBar() {
         >
           <NavLink
             className = "nav-link"
-            to = "/recommendations"
-          >Recomendações</NavLink>
+            to = "/favorites"
+          >Favorite Movies</NavLink>
 
           <NavLink
             className = "nav-link"
-            to = "/testa"
-          >Testa</NavLink>
+            to = "/recommendations"
+          >Recomendações</NavLink>
         </Nav>
       </Container>
     </Navbar>
