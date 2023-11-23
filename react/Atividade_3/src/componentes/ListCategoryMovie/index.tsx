@@ -1,16 +1,18 @@
-import { Card, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Slider from "react-slick";
 
-import { Movie, TheMovieDB } from "../../services/movie.service";
+import { TheMovieDB } from "../../services/movie.service";
 import "../../slick.css"; 
 import "../../slick-theme.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCaretLeft, faSquareCaretRight  } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { moreDetails } from "../../redux/slices/modalcontroll.slice";
 
 interface ListCategoryMovieProps {
   category: string;
   movies: TheMovieDB | undefined;
-  onMoreInfoMovie: (obj: Movie) => void;
 }
 
 function NextArrow(props: any) {
@@ -36,6 +38,16 @@ function PrevArrow(props: any) {
 }
 
 export default function ListCategoryMovie(props: ListCategoryMovieProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  
+  async function MovieDetails(idMovie: number) {
+    try {
+      await dispatch(moreDetails(idMovie));
+    } catch(error) {
+      alert("Verifique a conexão com a internet");
+    }
+  } 
+
   const settings = {
     centerMode: true,
     infinite: true,
@@ -51,15 +63,16 @@ export default function ListCategoryMovie(props: ListCategoryMovieProps) {
       <h4 className = "mt-2" style={{ textAlign: "left" }}>{props.category}</h4>
       
       <Slider {...settings}> 
-        {props.movies?.results.map((movie) => {
+        {props.movies?.results.map((movie, index) => {
           return (
-              <img
-                className = "p-1 cursor-pointer" 
-                onClick={() => props.onMoreInfoMovie(movie)}
-                style={{ width: 200, borderRadius: 7, cursor: "pointer", padding: "1px"}}
-                src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${movie.poster_path}`}
-                alt = {movie.title}
-              />
+            <img
+              key = {index} 
+              className = "p-1 cursor-pointer" 
+              onClick={() => MovieDetails(movie.id)}
+              style={{ width: 200, borderRadius: 7, cursor: "pointer", padding: "1px"}}
+              src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${movie.poster_path}`}
+              alt = {movie.title}
+            />
           );
         })}
       </Slider>

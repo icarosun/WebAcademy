@@ -8,15 +8,9 @@ import {
   GetActionMovies,
   GetAdventureMovies,
   GetRomanceMovies,
-  Movie,
 } from "../../services/movie.service";
 
-import {
-  GetMovieDetails,
-  MovieDetails,
-} from "../../services/movie.details.service";
 
-import ModalInfoMovie from "../../componentes/ModalInfoMovie/index";
 import ListCategoryMovie from "../../componentes/ListCategoryMovie";
 
 export default function ListMovies() {
@@ -26,15 +20,6 @@ export default function ListMovies() {
   const [actionMovies, SetActionMovies] = useState<TheMovieDB>();
   const [adventureMovies, SetAdventureMovies] = useState<TheMovieDB>();
   const [romanceMovies, SetRomanceMovies] = useState<TheMovieDB>();
-
-  const [isShowModal, SetIsShowModal] = useState<boolean>(false);
-  const [movieDetail, SetMovieDetail] = useState<MovieDetails>();
-
-  const handleClose = () => SetIsShowModal(false);
-
-  const handleMovieDetails = (obj: Movie) => {
-    MovieDetails(obj.id);
-  }
 
   useEffect(() => {
     async function fetchData() {
@@ -64,62 +49,38 @@ export default function ListMovies() {
 
     fetchData();
   }, []);
-  
-  async function MovieDetails(idMovie: number) {
-    const movieDetail = await GetMovieDetails(idMovie);
-    SetMovieDetail(movieDetail);
-    SetIsShowModal(true);
-  }
 
   return (
     <>
       <ListCategoryMovie
         category="Filmes Populares"
         movies={popularMovies}
-        onMoreInfoMovie={handleMovieDetails}
       />
 
        <ListCategoryMovie
         category="Filmes mais Curtidos"
         movies={moreRateMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
-      />
+     />
 
       <ListCategoryMovie
         category="Filmes de Comédia"
         movies={comedyMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
-      />
+     />
      
       <ListCategoryMovie
         category="Filmes de Ação"
         movies={actionMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
-      />
+     />
       
       <ListCategoryMovie
         category="Filmes de Aventura"
         movies={adventureMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
-      />
+     />
 
       <ListCategoryMovie
         category="Filmes de Romance"
         movies={romanceMovies}
-        onMoreInfoMovie={(obj) => {
-          MovieDetails(obj.id);
-        }}
-      />
-
-      <ModalInfoMovie isShow={isShowModal} onClose={handleClose} movieDetails={movieDetail} />
+     />
     </> 
   );    
 }

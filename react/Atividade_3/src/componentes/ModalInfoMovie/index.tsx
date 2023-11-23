@@ -2,16 +2,11 @@ import { Row, Col, Modal, Card, Stack, Badge, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
-import { MovieDetails } from "../../services/movie.details.service";
 import { useDispatch, useSelector } from "react-redux";
 import { Favorite, addFavoriteMovie, isMovieInTheFavoriteList, removeFavoriteMovie } from "../../redux/slices/favorite.slice";
 import CustomIconSaveOrRemoveMovie from "../CustomIconSaveOrRemoveMovie";
-
-interface ModalInfoMovieProps {
-  isShow: boolean;
-  onClose: () => void;
-  movieDetails: MovieDetails | undefined;
-}
+import { RootState } from "../../redux/store";
+import { closeModal } from "../../redux/slices/modalcontroll.slice";
 
 function changeMinutesToHour(minutes: number | undefined): String {
   if (minutes !== undefined) {
@@ -42,13 +37,14 @@ function handleValueId(id: number | undefined): number {
   return id !== undefined ? id : 0; 
 }
 
-export default function ModalInfoMovie(props: ModalInfoMovieProps) {
-  const isMoviePresentInTheFavoriteList = useSelector(isMovieInTheFavoriteList(handleValueId(props.movieDetails?.id)));
+export default function ModalInfoMovie() {
+  const modalInfo = useSelector((state: RootState) => state.modal);
+  const isMoviePresentInTheFavoriteList = useSelector(isMovieInTheFavoriteList(handleValueId(modalInfo.movieDetails?.id)));
   const dispatch = useDispatch();
 
   const favoriteMovie: Favorite = {
-    idMovie: handleValueId(props.movieDetails?.id), 
-    titleMovie: props.movieDetails?.title ?? "",
+    idMovie: handleValueId(modalInfo.movieDetails?.id), 
+    titleMovie: modalInfo.movieDetails?.title ?? "",
   }
 
   const handleAddListFavorite = (favoriteMovie: Favorite) => {
@@ -59,10 +55,12 @@ export default function ModalInfoMovie(props: ModalInfoMovieProps) {
     dispatch(removeFavoriteMovie(movieToRemove));
   }
 
+  const handleCloseModal = () => dispatch(closeModal());
+
   return (
-    <Modal show={props.isShow} onHide={props.onClose} size="xl" centered>
+    <Modal show={modalInfo.isShow} onHide={handleCloseModal} size="xl" centered>
       <Modal.Header closeButton>
-        <Modal.Title>{props.movieDetails?.title} </Modal.Title>
+        <Modal.Title>{modalInfo.movieDetails?.title} </Modal.Title>
         <CustomIconSaveOrRemoveMovie 
           favoriteMovie={favoriteMovie}
           savedMovie = {isMoviePresentInTheFavoriteList} 
@@ -75,28 +73,28 @@ export default function ModalInfoMovie(props: ModalInfoMovieProps) {
           <Col xs="auto">
             <img
               style={{ width: 200, borderRadius: 7 }}
-              src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${props
+              src={`${import.meta.env.VITE_APP_BASE_URL_IMAGEM}/${modalInfo
                 .movieDetails?.poster_path}`}
             />
             <p>
-              {changeStringToFormatInBrasil(props.movieDetails?.release_date)}
+              {changeStringToFormatInBrasil(modalInfo.movieDetails?.release_date)}
               <FontAwesomeIcon
                 className="pt-2 px-2"
                 icon={faCircle}
                 size="2xs"
               />
-              {changeMinutesToHour(props.movieDetails?.runtime)}
+              {changeMinutesToHour(modalInfo.movieDetails?.runtime)}
             </p>
             <h6>Orçamento</h6>
-            <p><span>$</span> {props.movieDetails?.revenue}</p>
+            <p><span>$</span> {modalInfo.movieDetails?.revenue}</p>
 
             <Badge bg="warning" text="dark">
               <Alert.Link
                 target="_blank"
-                href={`https://www.imdb.com/title/${props.movieDetails?.imdb_id}`}
+                href={`https://www.imdb.com/title/${modalInfo.movieDetails?.imdb_id}`}
               >
                 <span className="fw-bold">IMDb</span> |{" "}
-                {props.movieDetails?.imdb_id}
+                {modalInfo.movieDetails?.imdb_id}
               </Alert.Link>
             </Badge>
           </Col>
@@ -105,13 +103,13 @@ export default function ModalInfoMovie(props: ModalInfoMovieProps) {
               <Card border="success" className="text-center">
                 <Card.Body>
                   <Card.Title>Média de avaliação</Card.Title>
-                  <Card.Text>{props.movieDetails?.vote_average}</Card.Text>
+                  <Card.Text>{modalInfo.movieDetails?.vote_average}</Card.Text>
                 </Card.Body>
               </Card>
               <Card border="primary" className="text-center">
                 <Card.Body>
                   <Card.Title>Número de avaliações</Card.Title>
-                  <Card.Text>{props.movieDetails?.vote_count}</Card.Text>
+                  <Card.Text>{modalInfo.movieDetails?.vote_count}</Card.Text>
                 </Card.Body>
               </Card>
               <Card
@@ -120,18 +118,18 @@ export default function ModalInfoMovie(props: ModalInfoMovieProps) {
               >
                 <Card.Body>
                   <Card.Title>Popularidade</Card.Title>
-                  <Card.Text>{props.movieDetails?.popularity}</Card.Text>
+                  <Card.Text>{modalInfo.movieDetails?.popularity}</Card.Text>
                 </Card.Body>
               </Card>
             </Row>
             <Stack direction="horizontal" gap={3} className="my-3">
-              {props.movieDetails?.genres.map((genre) => {
+              {modalInfo.movieDetails?.genres.map((genre) => {
                 return <Badge key={genre.id} bg="dark">{genre.name}</Badge>;
               })}
             </Stack>
-            <p className="fst-italic">{props.movieDetails?.tagline}</p>
+            <p className="fst-italic">{modalInfo.movieDetails?.tagline}</p>
             <h5>Sinopse</h5>
-            <p>{props.movieDetails?.overview}</p>
+            <p>{modalInfo.movieDetails?.overview}</p>
           </Col>
         </Row>
       </Modal.Body>
