@@ -11,8 +11,8 @@ interface Game {
 }
 
 interface GameState {
-  game: Game,
-  logs: Game[]
+  game: Game;
+  logs: Game[];
 }
 
 const gameInitialState: GameState = {
@@ -66,6 +66,13 @@ const gameTicTacToeSlice = createSlice({
       game.winner = calculateWinner(game.squares); 
 
       game.numOfRounds += 1;
+      
+      if (game.numOfRounds < state.logs.length) {
+        state.logs.splice(game.numOfRounds);
+        state.logs.push(game);
+      } else {
+        state.logs.push(game);
+      }
 
       if (game.winner) {
         game.statusGame = `O jogador ${game.nextPlayer} venceu!`; 
@@ -80,9 +87,12 @@ const gameTicTacToeSlice = createSlice({
     },
     restartTheGame(state) {
       state.game = gameInitialState.game;
+    },
+    goToLog(state, action: PayloadAction<Game>) {
+      state.game = action.payload;
     }
   }
 });
 
-export const { clickSquare, restartTheGame } = gameTicTacToeSlice.actions;
+export const { clickSquare, restartTheGame, goToLog } = gameTicTacToeSlice.actions;
 export default gameTicTacToeSlice.reducer;

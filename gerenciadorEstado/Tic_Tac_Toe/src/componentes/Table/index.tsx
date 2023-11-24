@@ -34,7 +34,6 @@ const CelXorO = (props: CelXorOProps) => {
   }
 }
 
-
 export default function TableBoard() {
   return (
     <table className='tableGame'> 
