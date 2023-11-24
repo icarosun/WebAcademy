@@ -1,0 +1,34 @@
+span {
+  font-family: arial, sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.tableGame {
+  border-spacing: 6px;
+  margin: 2px auto;
+  background: #14bdac;
+}
+
+.lineTable {
+  line-height: 1.58;
+  border-bottom: thick solid;
+  border-color: #70757a;
+}
+
+td {
+  height: 48px;
+  width: 48px;
+  font-family: arial, sans-serif;
+  font-size: 1.17em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.celMid {
+  line-height: 1.58;
+  border-left: thick solid;
+  border-right: thick solid;
+  border-color: #70757a;
+}
+
