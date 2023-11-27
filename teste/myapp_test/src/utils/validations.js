@@ -6,11 +6,12 @@
  */
 function firstName(fullName) {
   const fullNameTrim = fullName.trim();
-  const blankSpace = fullNameTrim.lastIndexOf(' ');
+  const blankSpace = fullNameTrim.indexOf(' ');
 
   if (blankSpace === -1) return fullName;
   else return fullNameTrim.slice(0, blankSpace);
 }
+console.log(firstName("John Doe Etc"));
 
 /**
  * Verifies the availability of a product in stock based on its type and desired quantity.
