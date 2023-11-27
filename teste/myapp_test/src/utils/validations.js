@@ -3,15 +3,21 @@
  *
  * @param {string} fullName - The full user name separated by blank spaces.
  * @returns {string} - The first name extracted from the full name, or the name itself if no blank space is found.
+ * @returns {null} - When the full name is only blank space
  */
 function firstName(fullName) {
+  if (fullName == null || fullName == undefined) return null;
+
   const fullNameTrim = fullName.trim();
+  
+  if (fullNameTrim.length <= 1) return null;
+  
   const blankSpace = fullNameTrim.indexOf(' ');
 
   if (blankSpace === -1) return fullName;
   else return fullNameTrim.slice(0, blankSpace);
 }
-console.log(firstName("John Doe Etc"));
+console.log(firstName());
 
 /**
  * Verifies the availability of a product in stock based on its type and desired quantity.

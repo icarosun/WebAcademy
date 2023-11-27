@@ -23,5 +23,16 @@ describe("firstName()", () => {
     const name = "Alice Test ";
     const result = firstName(name);
     expect(result).toBe("Alice");
+  });
+
+  it("should return null when the full name is only blank space", () => {
+    const name = "               "; 
+    const result = firstName(name);
+    expect(result).toBeNull();
+  });
+
+  it("should return null when the full name is empty, undefined or null", () => {
+    const result = firstName();
+    expect(result).toBeNull();
   })
 });
