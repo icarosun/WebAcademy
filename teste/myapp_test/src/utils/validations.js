@@ -10,14 +10,13 @@ function firstName(fullName) {
 
   const fullNameTrim = fullName.trim();
   
-  if (fullNameTrim.length <= 1) return null;
+  if (fullNameTrim.length <= 0) return null;
   
   const blankSpace = fullNameTrim.indexOf(' ');
 
   if (blankSpace === -1) return fullName;
   else return fullNameTrim.slice(0, blankSpace);
 }
-console.log(firstName());
 
 /**
  * Verifies the availability of a product in stock based on its type and desired quantity.
@@ -35,10 +34,12 @@ function verifyStockAvailability(productType, qty) {
     tablet: 15,
     book: 0,
   };
+ 
+  if (!(productType in stock) || qty < 1) return false;
 
   const availableStock = stock[productType];
-  if (availableStock === 0) return false;
-  else return true;
+  
+  return availableStock >= qty;
 }
 
 /**
