@@ -1,4 +1,4 @@
-const { firstName, verifyStockAvailability } = require("../validations.js");
+const { firstName, verifyStockAvailability, calculateTotalPrice } = require("../validations.js");
 
 describe("firstName()", () => {
   it("should return the first name when the full name is given", () => {
@@ -82,4 +82,66 @@ describe("verifyStockAvailability()", () => {
 
     expect(result).toBe(false);
   });
-}) 
+});
+
+describe("calculateTotalPrice()", () => {
+  it("should return the total price when a array of products with product, price and quantity is given", () => {
+    const products = [
+      { name: 'Product 1', price: 10, quantity: 2 },
+      { name: 'Product 2', price: 15, quantity: 2 },
+      { name: 'Product 3', price: 20, quantity: 1 }
+    ];
+
+    const result = calculateTotalPrice(products);
+
+    expect(result).toBe(70);
+  });
+
+  it("the total price retuned should ignore the product in calculate when the price is less zero", () => {
+    const products = [
+      { name: 'Product 1', price: -1, quantity: 2 },
+      { name: 'Product 2', price: 15, quantity: 2 },
+      { name: 'Product 3', price: 20, quantity: 1 }
+    ];
+
+    const result = calculateTotalPrice(products);
+
+    expect(result).toBe(50);
+  });
+  
+  it("the total price retuned should ignore the product in calculate when the quantity is less zero", () => {
+    const products = [
+      { name: 'Product 1', price: 10, quantity: -1 },
+      { name: 'Product 2', price: 15, quantity: 2 },
+      { name: 'Product 3', price: 20, quantity: 1 }
+    ];
+
+    const result = calculateTotalPrice(products);
+
+    expect(result).toBe(50);
+  });
+
+  it("the total price retuned should ignore the product in calculate when the object product is without price", () => {
+    const products = [
+      { name: 'Product 1', price: 10, quantity: 2 },
+      { name: 'Product 2', price: 15, quantity: 2 },
+      { name: 'Product 3', quantity: 1 }
+    ];
+
+    const result = calculateTotalPrice(products);
+
+    expect(result).toBe(50);
+  });
+
+  it("the total price retuned should ignore the product in calculate when the object product is without quantity", () => {
+    const products = [
+      { name: 'Product 1', price: 7, quantity: 2 },
+      { name: 'Product 2', price: 15 },
+      { name: 'Product 3', price: 20, quantity: 1 }
+    ];
+
+    const result = calculateTotalPrice(products);
+
+    expect(result).toBe(34);
+  });
+});
